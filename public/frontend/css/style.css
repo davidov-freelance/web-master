@@ -1,0 +1,83 @@
+body { font-family: 'Roboto', sans-serif; font-size: 14px; color: #000;}
+
+.mainSection h4, .mainSection h3 { font-family: 'Roboto Condensed', sans-serif; }
+
+
+
+br.clear { clear: both; }
+
+h2, h3, h4, h5, h6 { margin: 0; }
+a { display: inline-block; }
+
+
+.header { background-color: #1b5ac3; padding: 20px 0; text-align: center; }
+.header a { display: inline-block; text-decoration: none; }
+
+
+.content { padding: 50px 0 0; background-color: #f0efee; }
+.content .broadWay { background-color: #fff; }
+.content .broadWay .banner ul { display: inline-block; width: 100%; padding: 8px 15px; }
+.content .broadWay .banner li { display: inline-block; margin: 0 0 0 10px; vertical-align: middle; }
+.content .broadWay .banner li:first-child { margin: 0; }
+.content .broadWay .banner li span { border-radius: 100%; }
+.content .broadWay .banner li span img { border-radius: 100%; width: 46px; height: 46px; }
+.content .broadWay .banner li h4 { font-size: 18px; color: #000; text-transform: capitalize; font-weight: 600;  }
+.content .broadWay .banner li h4 span { display: block; text-transform: capitalize; color: #6a6a6a; font-size: 14px; margin: 5px 0 0; font-weight: 400;font-family: 'Roboto', sans-serif; }
+.content .broadWay .banner img { width: 100%; }
+.content .broadWay .banner var { display: inline-block; width: 100%; text-align: right; padding: 14px; color: #5c5c5c; border-bottom: 1px solid #e5e5e5; text-transform: uppercase; font-style: normal; font-weight: 500; font-size: 14px; }
+
+.content .broadWay .place { padding: 20px 15px;  box-shadow: 0px 2px 5px #ccc; }
+/*.content .broadWay .place h4 { color: #1b5ac3; margin: 0 0 10px; }
+.content .broadWay .place p { font-size: 14px; color: #5c5c5c; margin: 0 0 20px; line-height: 21px;  }
+.content .broadWay .place span { display: inline-block; width: 48%; text-align: left; }
+.content .broadWay .place span img { width: 25%; }
+.content .broadWay .place ul { display: inline-block; width: 48%; text-align: right;  }
+.content .broadWay .place li { display: inline-block; }
+.content .broadWay .place li a { width: 25px; height: 25px; display: inline-block; border-radius: 100%; color: #5c5c5c; border: 1px solid #5c5c5c; text-align: center; padding: 5px 0 0; font-size: 13px; }
+.content .broadWay .place li:first-child:hover a { background-color: rgb(59, 89, 152); color: #fff; border: 1px solid rgb(59, 89, 152);}
+.content .broadWay .place li:nth-child(2):hover a { background-color: rgb(29, 161, 242); color: #fff; border: 1px solid rgb(29, 161, 242); }
+.content .broadWay .place li:nth-child(3):hover a { background-color: 	rgb(14, 118, 168); color: #fff;border: 1px solid rgb(14, 118, 168); }
+.content .broadWay .place li:last-child:hover a { background-color: rgb(220, 78, 65); color: #fff;border: 1px solid rgb(220, 78, 65); }*/
+
+.content .broadWay .place .applinK li { display: block; width :100%; margin: 0 0 10px; text-align: center; }
+.content .broadWay .place .applinK li a { display: inline-block;  width: 15%; height: auto; }
+
+.event .broadWay .banner var { text-align: left; padding: 10px 15px; }
+.event .broadWay .banner var ul { padding: 0; }
+.event .broadWay .banner var li { display: inline-block; margin: 0 0 0 15px; }
+.event .broadWay .banner var li:first-child { margin: 0; }
+.event .broadWay .banner var li:last-child a { display: inline-block; border-radius: 30px; padding: 6px 15px; color: #fff; background-color: #fbbc2f; font-size: 13px; line-height: 14px; }
+.event .broadWay .banner var li a { display: inline-block; color: #5c5c5c; font-size: 13px; text-transform: capitalize; font-weight: 400; }
+.event .broadWay .banner var li a i { margin: 0 5px 0 0; }
+.event .broadWay kbd { padding: 15px; border-bottom: 1px solid #e5e5e5; display: inline-block; width: 100%; background-color: transparent; box-shadow: none; }
+.event .broadWay  kbd h4 { color: #1b5ac3; font-size: 18px;  }
+.event .broadWay  kbd h4 span { display: block; color: #000; margin: 10px 0 0; font-size: 16px; font-weight: 500; }
+.event .broadWay  kbd h4 span i { margin: 0 5px 0 0; }
+
+
+.copyRight { font-family: 'Raleway', sans-serif; color: #717171; text-align: center; padding: 20px 0; font-weight: 300; }
+.copyRight a { margin: 0 0 10px; display: inline-block; }
+.copyRight p { font-size: 13px; margin: 0 0 5px; line-height: 14px; font-weight: 300; }
+.copyRight b { font-weight: 500; }
+
+.open-in-app { background: #1b5ac3; padding: 10px 20px; margin-top: 10px; color: #fff; width: 120px; cursor: pointer;}
+
+@media only screen and ( min-width: 0 ) and ( max-width: 767px ) {
+    .content .broadWay .place span img { width: 80%;}
+    .content .broadWay .place .applinK li a { width: 40%; }
+    .copyRight p { font-size: 12px; font-weight: 400;}
+}
+@media only screen and ( min-width: 480px ) and ( max-width: 639px ) {
+    .content .broadWay .place span img { width: 60%;}
+
+}
+
+@media only screen and ( min-width: 640px ) and ( max-width: 767px ) {
+    .content .broadWay .place span img { width: 50%;}
+    .content .broadWay .place .applinK li a { width: 25%; }
+}
+
+@media only screen and ( min-width: 768px ) and ( max-width: 1000px ) {
+    .content .broadWay .place span img { width: 40%;}
+    .content .broadWay .place .applinK li a { width: 20%; }
+}

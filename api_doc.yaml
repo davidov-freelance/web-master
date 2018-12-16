@@ -1,0 +1,3238 @@
+swagger: '2.0'
+info:
+  description: |
+    API for Broadway Connected app
+  version: 1.0.0
+  title: Broadway Connected API
+  termsOfService: http://swagger.io/terms/
+  contact:
+    email: apiteam@swagger.io
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+# host: petstore.swagger.io
+# basePath: /v2
+tags:
+- name: Auth
+  description: Registration and Authorization
+- name: Posts
+  description: Articles and Events
+- name: Notifications
+  description: Notifications
+- name: Questions
+  description: Question of the day
+- name: Shows
+  description: Shows
+# schemes:
+# - http
+paths:
+  /api/register:
+    post:
+      tags:
+      - Auth
+      summary: Registration new user
+      operationId: registerUser
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+        - in: body
+          name: Registration data
+          description: Registration data
+          schema:
+            type: object
+            required:
+            - email
+            - password
+            - first_name
+            - last_name
+            properties:
+              email:
+                type: string
+                example: 'dima@ya.ru'
+              password:
+                type: string
+                example: '111111'
+              first_name:
+                type: string
+                example: 'Dima'
+              last_name:
+                type: string
+                example: 'Medvedev'
+              phone:
+                type: string
+                example: '+380631112233'
+
+      responses:
+        100:
+          description: Email already exists
+          schema:
+            type: object
+            properties:
+              Message:
+                type: string
+                example: 'Email already found in our system, please try another one'
+              Response:
+                type: string
+                example: '1000'
+              UserBlocked:
+                type: integer
+                example: 0
+              Result:
+                type: object
+                example: {}
+
+        200:
+          description: User register successfully
+          schema:
+            type: object
+            properties:
+              Message:
+                type: string
+                example: 'User register successfully'
+              Response:
+                type: string
+                example: '1000'
+              UserBlocked:
+                type: integer
+                example: 0
+              Result:
+                type: object
+                example: {
+                  "id": 91,
+                  "user_id": 91,
+                  "first_name": "Dima",
+                  "last_name": "Oprischenko",
+                  "email": "dima@gmail.com",
+                  "phone": "",
+                  "country": "",
+                  "city": "",
+                  "dob": null,
+                  "status": "1",
+                  "profile_image": "http://broadway.com/public/images/default.jpg",
+                  "handle": "",
+                  "field_of_work": "",
+                  "field_of_work_id": "0",
+                  "headline_position": "",
+                  "previous_position": "",
+                  "social_media_id": "",
+                  "social_media_platform": "",
+                  "is_featured": "0",
+                  "private_profile": "0",
+                  "notification_status": "1",
+                  "is_verified": "0",
+                  "follower_count": 0,
+                  "following_count": 0,
+                  "event_count": 0,
+                  "article_count": 0,
+                  "is_following": 0,
+                  "token": "..."
+                }
+
+  /api/user/verify:
+    post:
+      tags:
+      - Auth
+      summary: User Verification
+      operationId: userVerify
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: Verification data
+        description: Verification data
+        schema:
+          type: object
+          required:
+          - user_id
+          - code
+          properties:
+            user_id:
+              type: integer
+              format: int64
+              example: '80'
+            code:
+              type: string
+              example: '0123'
+
+      responses:
+        100:
+          description: User verification failed
+          schema:
+            type: object
+            properties:
+              Message:
+                type: string
+                example: 'User verification failed'
+              Response:
+                type: string
+                example: '1000'
+              UserBlocked:
+                type: integer
+                example: 0
+              Result:
+                type: object
+                example: {}
+
+        200:
+          description: User has been successfully verified
+          schema:
+            type: object
+            properties:
+              Message:
+                type: string
+                example: 'User has been successfully verified'
+              Response:
+                type: string
+                example: '2000'
+              UserBlocked:
+                type: integer
+                example: 0
+              Result:
+                type: boolean
+                example: true
+
+  /api/user/resend-sms-verification:
+    post:
+      tags:
+      - Auth
+      summary: Resend SMS verification new user
+      operationId: resendSMSVerivication
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: Resend data
+        description: Resend data
+        schema:
+          type: object
+          required:
+          - user_id
+          properties:
+            user_id:
+              type: integer
+              example: '88'
+            phone:
+              type: string
+              example: '+380631112233'
+
+      responses:
+        100:
+          description: User already is verified
+          schema:
+            type: object
+            properties:
+              Message:
+                type: string
+                example: 'User already is verified'
+              Response:
+                type: string
+                example: '1000'
+              UserBlocked:
+                type: integer
+                example: 0
+              Result:
+                type: object
+                example: {}
+
+        200:
+          description: Verification code has been resent successfully
+          schema:
+            type: object
+            properties:
+              Message:
+                type: string
+                example: 'Verification code has been resent successfully'
+              Response:
+                type: string
+                example: '2000'
+              UserBlocked:
+                type: integer
+                example: 0
+              Result:
+                type: boolean
+                example: true
+
+  /api/user/friend-request:
+    post:
+      tags:
+      - Auth
+      summary: Send friend adding request
+      operationId: friendRequest
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: Resend data
+        description: Resend data
+        schema:
+          type: object
+          required:
+          - sender_id
+          - recipient_id
+          - add
+          properties:
+            sender_id:
+              type: integer
+              example: '3'
+              description: User who send request
+            recipient_id:
+              type: integer
+              example: '8'
+              description: User who get request
+            add:
+              type: string
+              example: 'false'
+              description: If 'true' will add request or if 'false' will revoke request
+
+      responses:
+        100:
+          description: Field "add" must be equal "false" or "true"
+          schema:
+            type: object
+            properties:
+              Message:
+                type: string
+                example: 'Field "add" must be equal "false" or "true"'
+              Response:
+                type: string
+                example: '1000'
+              UserBlocked:
+                type: integer
+                example: 0
+              Result:
+                type: object
+                example: {}
+
+        200:
+          description: Friend adding request has been sent successfully
+          schema:
+            type: object
+            properties:
+              Message:
+                type: string
+                example: 'Friend adding request has been sent successfully'
+              Response:
+                type: string
+                example: '2000'
+              UserBlocked:
+                type: integer
+                example: 0
+              Result:
+                type: boolean
+                example: true
+
+  /api/user/friend-request-answer:
+    post:
+      tags:
+      - Auth
+      summary: Answer to friend adding request
+      operationId: friendRequestAnswer
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: Resend data
+        description: Resend data
+        schema:
+          type: object
+          required:
+          - sender_id
+          - recipient_id
+          - accept
+          properties:
+            sender_id:
+              type: integer
+              example: '3'
+              description: User who send request to add a friend
+            recipient_id:
+              type: integer
+              example: '8'
+              description: User who get request to add a friend
+            accept:
+              type: string
+              example: 'false'
+              description: If 'true' will accept request or if 'false' will deny request
+
+      responses:
+        100:
+          description: Field "accept" must be equal "false" or "true"
+          schema:
+            type: object
+            properties:
+              Message:
+                type: string
+                example: 'Field "accept" must be equal "false" or "true"'
+              Response:
+                type: string
+                example: '1000'
+              UserBlocked:
+                type: integer
+                example: 0
+              Result:
+                type: object
+                example: {}
+
+        200:
+          description: Status was successfully updated
+          schema:
+            type: object
+            properties:
+              Message:
+                type: string
+                example: 'Status was successfully updated'
+              Response:
+                type: string
+                example: '2000'
+              UserBlocked:
+                type: integer
+                example: 0
+              Result:
+                type: boolean
+                example: true
+
+  /api/user/change-privacy-status:
+    post:
+      tags:
+      - Auth
+      summary: Change privacy status
+      operationId: changePrivacyStatus
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: Resend data
+        description:  Resend data
+        schema:
+          type: object
+          required:
+          - user_id
+          - private_profile
+          properties:
+            user_id:
+              type: integer
+              example: '3'
+              description: User who want to chang privacy status
+            private_profile:
+              type: boolean
+              example: 'true'
+              description: If 'true' profile will be private or if 'false' profile will be public
+
+      responses:
+        100:
+          description: private_profile is required
+          schema:
+            type: object
+            properties:
+              Message:
+                type: string
+                example: 'private_profile is required'
+              Response:
+                type: string
+                example: '1000'
+              UserBlocked:
+                type: integer
+                example: 0
+              Result:
+                type: object
+                example: {}
+
+        200:
+          description: Privacy status was successfully updated
+          schema:
+            type: object
+            properties:
+              Message:
+                type: string
+                example: 'Privacy status was successfully updated'
+              Response:
+                type: string
+                example: '2000'
+              UserBlocked:
+                type: integer
+                example: 0
+              Result:
+                type: boolean
+                example: true
+
+  /api/user/profile:
+    get:
+      tags:
+      - Auth
+      summary: Get user profile
+      operationId: getUserProfile
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: query
+        name: user_id
+        description: Id of user, who makes a request for getting profile data
+        type: integer
+        required: true
+
+      - name: profile_id
+        in: query
+        description: Id of user, whose data will be returned
+        type: integer
+        required: true
+
+      responses:
+        100:
+          description: Error
+          schema:
+            type: object
+            properties:
+              Message:
+                type: string
+                example: 'Error'
+              Response:
+                type: string
+                example: '1000'
+              UserBlocked:
+                type: integer
+                example: 0
+              Result:
+                type: object
+                example: {}
+
+        200:
+          description: Data retrieved successfully
+          schema:
+            type: object
+            properties:
+              Message:
+                type: string
+                example: 'Data retrieved successfully'
+              Response:
+                type: string
+                example: '2000'
+              UserBlocked:
+                type: integer
+                example: 0
+              Result:
+                type: object
+                example: {
+                   "profile": {
+                       "id": 2,
+                       "user_id": 2,
+                       "first_name": "Kurt",
+                       "last_name": "Cobain",
+                       "email": "kurtcobain@gmail.com",
+                       "phone": "",
+                       "country": "United States",
+                       "city": "New York",
+                       "dob": "1982-10-24",
+                       "status": 0,
+                       "profile_image": "http://brodway.dm/public/images/2-qQeQbmbbE3mq.png",
+                       "handle": "kurtcobain",
+                       "field_of_work": "Electrician",
+                       "field_of_work_id": 35,
+                       "headline_position": "",
+                       "previous_position": "",
+                       "social_media_id": "",
+                       "social_media_platform": "",
+                       "is_featured": 0,
+                       "private_profile": 0,
+                       "notification_status": 1,
+                       "is_verified": 0,
+                       "follower_count": 2,
+                       "following_count": 2,
+                       "event_count": 0,
+                       "article_count": 1,
+                       "is_following": 0
+                   },
+                   "badges": [
+                       {
+                           "name": "Test badge",
+                           "badge_amount": "3",
+                           "badge_icon": "http://brodway.dm/public/images/badges/7FNbpUCgmnpj.png"
+                       },
+                       {
+                           "name": "Old Badge",
+                           "badge_amount": "2",
+                           "badge_icon": "http://brodway.dm/public/images/badges/UCyydlyTfiKL.jpeg"
+                       },
+                       {
+                           "name": "New Badge for Test",
+                           "badge_amount": "1",
+                           "badge_icon": "http://brodway.dm/public/images/badges/4Xhb7VG0t7cx.jpg"
+                       }
+                   ],
+                   "articles": [
+                       {
+                           "id": 4,
+                           "user_id": 2,
+                           "category_id": 0,
+                           "top_bar": "",
+                           "title": "Tribute To Kurt",
+                           "post_type": "article",
+                           "posting_type": "user",
+                           "status": "approved",
+                           "description": "HELLO ITS TESTING ARTICLE",
+                           "location": "",
+                           "latitude": 0,
+                           "longitude": 0,
+                           "start_date": "0000-00-00",
+                           "end_date": "0000-00-00",
+                           "start_time": "00:00:00",
+                           "end_time": "00:00:00",
+                           "is_all_day": 0,
+                           "color": "",
+                           "image": "Pyl7gp9FIlqx.png",
+                           "published_date": "2017-10-24 12:30:50",
+                           "created_at": "2017-10-24 12:30:50",
+                           "updated_at": "2017-10-30 13:31:00",
+                           "reposted_at": "0000-00-00 00:00:00",
+                           "no_of_times_reposted": 0,
+                           "availability": "followers",
+                           "group_ids": "",
+                           "source_url": "",
+                           "link_text": "",
+                           "in_trending": 0,
+                           "in_feed": 0,
+                           "order_number": 0,
+                           "time_ago": "2017-10-24",
+                           "post_image": "http://brodway.dm/public/images/articles/Pyl7gp9FIlqx.png",
+                           "is_like": 0,
+                           "likes": 0,
+                           "is_in_calendar": 0,
+                           "share_url": "http://brodway.dm/post/article/4",
+                           "publisher": {
+                               "id": 2,
+                               "role_id": 2,
+                               "first_name": "Kurt",
+                               "last_name": "Cobain",
+                               "full_name": "",
+                               "email": "kurtcobain@gmail.com",
+                               "status": 0,
+                               "dob": "1982-10-24",
+                               "city": "New York",
+                               "state": "",
+                               "country": "United States",
+                               "latitude": 0,
+                               "longitude": 0,
+                               "phone": "",
+                               "handle": "kurtcobain",
+                               "field_of_work": "Electrician",
+                               "field_of_work_id": 35,
+                               "headline_position": "",
+                               "previous_position": "",
+                               "profile_picture": "2-qQeQbmbbE3mq.png",
+                               "social_media_id": "",
+                               "social_media_platform": "",
+                               "notification_status": 1,
+                               "device_type": "ios",
+                               "verification_code": "",
+                               "is_verified": 0,
+                               "is_featured": 0,
+                               "private_profile": 0,
+                               "is_subadmin": 0,
+                               "admin_role": "moderator",
+                               "created_at": "2017-10-24 12:07:03",
+                               "updated_at": "2018-05-17 11:56:57",
+                               "deleted_at": null,
+                               "last_login": "2017-10-24 15:07:03",
+                               "profile_image": "http://brodway.dm/public/images/2-qQeQbmbbE3mq.png",
+                               "following_count": 2,
+                               "follower_count": 2,
+                               "article_count": 1,
+                               "event_count": 0,
+                               "is_following": 0,
+                               "fow": {
+                                   "id": 35,
+                                   "title": "Electrician",
+                                   "status": 1,
+                                   "created_at": "2017-10-27 14:33:11",
+                                   "updated_at": "2017-10-27 17:33:11"
+                               }
+                           },
+                           "tags": [
+                               {
+                                   "id": 112,
+                                   "post_id": 4,
+                                   "tag_id": 61,
+                                   "created_at": "2017-10-30 11:31:46",
+                                   "updated_at": "2017-10-30 13:31:46",
+                                   "tag_name": "Broadway",
+                                   "tag": {
+                                       "id": 61,
+                                       "tag": "Broadway",
+                                       "status": 1,
+                                       "tag_type": "admin",
+                                       "created_at": "2017-10-26 22:16:20",
+                                       "updated_at": "2017-11-21 14:02:43"
+                                   }
+                               },
+                               {
+                                   "id": 113,
+                                   "post_id": 4,
+                                   "tag_id": 62,
+                                   "created_at": "2017-10-30 11:31:46",
+                                   "updated_at": "2017-10-30 13:31:46",
+                                   "tag_name": "Off-Broadway",
+                                   "tag": {
+                                       "id": 62,
+                                       "tag": "Off-Broadway",
+                                       "status": 1,
+                                       "tag_type": "admin",
+                                       "created_at": "2017-10-26 22:16:35",
+                                       "updated_at": "2017-10-27 01:16:35"
+                                   }
+                               },
+                               {
+                                   "id": 114,
+                                   "post_id": 4,
+                                   "tag_id": 63,
+                                   "created_at": "2017-10-30 11:31:46",
+                                   "updated_at": "2017-10-30 13:31:46",
+                                   "tag_name": "Interview",
+                                   "tag": {
+                                       "id": 63,
+                                       "tag": "Interview",
+                                       "status": 1,
+                                       "tag_type": "admin",
+                                       "created_at": "2017-10-26 22:17:04",
+                                       "updated_at": "2017-10-27 01:17:04"
+                                   }
+                               }
+                           ],
+                           "favourites": []
+                       }
+                   ]
+               }
+
+  /api/user/profile:
+    get:
+      tags:
+      - Auth
+      summary: Get user profile
+      operationId: getUserProfile
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: query
+        name: user_id
+        description: Id of user, who makes a request for getting profile data
+        type: integer
+        required: true
+
+      - name: profile_id
+        in: query
+        description: Id of user, whose data will be returned
+        type: integer
+        required: true
+
+      responses:
+        100:
+          description: Error
+          schema:
+            type: object
+            properties:
+              Message:
+                type: string
+                example: 'Error'
+              Response:
+                type: string
+                example: '1000'
+              UserBlocked:
+                type: integer
+                example: 0
+              Result:
+                type: object
+                example: {}
+
+        200:
+          description: Data retrieved successfully
+          schema:
+            type: object
+            properties:
+              Message:
+                type: string
+                example: 'Data retrieved successfully'
+              Response:
+                type: string
+                example: '2000'
+              UserBlocked:
+                type: integer
+                example: 0
+              Result:
+                type: object
+                example: {
+                   "profile": {
+                       "id": 2,
+                       "user_id": 2,
+                       "first_name": "Kurt",
+                       "last_name": "Cobain",
+                       "email": "kurtcobain@gmail.com",
+                       "phone": "",
+                       "country": "United States",
+                       "city": "New York",
+                       "dob": "1982-10-24",
+                       "status": 0,
+                       "profile_image": "http://brodway.dm/public/images/2-qQeQbmbbE3mq.png",
+                       "handle": "kurtcobain",
+                       "field_of_work": "Electrician",
+                       "field_of_work_id": 35,
+                       "headline_position": "",
+                       "previous_position": "",
+                       "social_media_id": "",
+                       "social_media_platform": "",
+                       "is_featured": 0,
+                       "private_profile": 0,
+                       "notification_status": 1,
+                       "is_verified": 0,
+                       "follower_count": 2,
+                       "following_count": 2,
+                       "event_count": 0,
+                       "article_count": 1,
+                       "is_following": 0
+                   },
+                   "badges": [
+                       {
+                           "name": "Test badge",
+                           "badge_amount": "3",
+                           "badge_icon": "http://brodway.dm/public/images/badges/7FNbpUCgmnpj.png"
+                       },
+                       {
+                           "name": "Old Badge",
+                           "badge_amount": "2",
+                           "badge_icon": "http://brodway.dm/public/images/badges/UCyydlyTfiKL.jpeg"
+                       },
+                       {
+                           "name": "New Badge for Test",
+                           "badge_amount": "1",
+                           "badge_icon": "http://brodway.dm/public/images/badges/4Xhb7VG0t7cx.jpg"
+                       }
+                   ],
+                   "articles": [
+                       {
+                           "id": 4,
+                           "user_id": 2,
+                           "category_id": 0,
+                           "top_bar": "",
+                           "title": "Tribute To Kurt",
+                           "post_type": "article",
+                           "posting_type": "user",
+                           "status": "approved",
+                           "description": "HELLO ITS TESTING ARTICLE",
+                           "location": "",
+                           "latitude": 0,
+                           "longitude": 0,
+                           "start_date": "0000-00-00",
+                           "end_date": "0000-00-00",
+                           "start_time": "00:00:00",
+                           "end_time": "00:00:00",
+                           "is_all_day": 0,
+                           "color": "",
+                           "image": "Pyl7gp9FIlqx.png",
+                           "published_date": "2017-10-24 12:30:50",
+                           "created_at": "2017-10-24 12:30:50",
+                           "updated_at": "2017-10-30 13:31:00",
+                           "reposted_at": "0000-00-00 00:00:00",
+                           "no_of_times_reposted": 0,
+                           "availability": "followers",
+                           "group_ids": "",
+                           "source_url": "",
+                           "link_text": "",
+                           "in_trending": 0,
+                           "in_feed": 0,
+                           "order_number": 0,
+                           "time_ago": "2017-10-24",
+                           "post_image": "http://brodway.dm/public/images/articles/Pyl7gp9FIlqx.png",
+                           "is_like": 0,
+                           "likes": 0,
+                           "is_in_calendar": 0,
+                           "share_url": "http://brodway.dm/post/article/4",
+                           "publisher": {
+                               "id": 2,
+                               "role_id": 2,
+                               "first_name": "Kurt",
+                               "last_name": "Cobain",
+                               "full_name": "",
+                               "email": "kurtcobain@gmail.com",
+                               "status": 0,
+                               "dob": "1982-10-24",
+                               "city": "New York",
+                               "state": "",
+                               "country": "United States",
+                               "latitude": 0,
+                               "longitude": 0,
+                               "phone": "",
+                               "handle": "kurtcobain",
+                               "field_of_work": "Electrician",
+                               "field_of_work_id": 35,
+                               "headline_position": "",
+                               "previous_position": "",
+                               "profile_picture": "2-qQeQbmbbE3mq.png",
+                               "social_media_id": "",
+                               "social_media_platform": "",
+                               "notification_status": 1,
+                               "device_type": "ios",
+                               "verification_code": "",
+                               "is_verified": 0,
+                               "is_featured": 0,
+                               "private_profile": 0,
+                               "is_subadmin": 0,
+                               "admin_role": "moderator",
+                               "created_at": "2017-10-24 12:07:03",
+                               "updated_at": "2018-05-17 11:56:57",
+                               "deleted_at": null,
+                               "last_login": "2017-10-24 15:07:03",
+                               "profile_image": "http://brodway.dm/public/images/2-qQeQbmbbE3mq.png",
+                               "following_count": 2,
+                               "follower_count": 2,
+                               "article_count": 1,
+                               "event_count": 0,
+                               "is_following": 0,
+                               "fow": {
+                                   "id": 35,
+                                   "title": "Electrician",
+                                   "status": 1,
+                                   "created_at": "2017-10-27 14:33:11",
+                                   "updated_at": "2017-10-27 17:33:11"
+                               }
+                           },
+                           "tags": [
+                               {
+                                   "id": 112,
+                                   "post_id": 4,
+                                   "tag_id": 61,
+                                   "created_at": "2017-10-30 11:31:46",
+                                   "updated_at": "2017-10-30 13:31:46",
+                                   "tag_name": "Broadway",
+                                   "tag": {
+                                       "id": 61,
+                                       "tag": "Broadway",
+                                       "status": 1,
+                                       "tag_type": "admin",
+                                       "created_at": "2017-10-26 22:16:20",
+                                       "updated_at": "2017-11-21 14:02:43"
+                                   }
+                               },
+                               {
+                                   "id": 113,
+                                   "post_id": 4,
+                                   "tag_id": 62,
+                                   "created_at": "2017-10-30 11:31:46",
+                                   "updated_at": "2017-10-30 13:31:46",
+                                   "tag_name": "Off-Broadway",
+                                   "tag": {
+                                       "id": 62,
+                                       "tag": "Off-Broadway",
+                                       "status": 1,
+                                       "tag_type": "admin",
+                                       "created_at": "2017-10-26 22:16:35",
+                                       "updated_at": "2017-10-27 01:16:35"
+                                   }
+                               },
+                               {
+                                   "id": 114,
+                                   "post_id": 4,
+                                   "tag_id": 63,
+                                   "created_at": "2017-10-30 11:31:46",
+                                   "updated_at": "2017-10-30 13:31:46",
+                                   "tag_name": "Interview",
+                                   "tag": {
+                                       "id": 63,
+                                       "tag": "Interview",
+                                       "status": 1,
+                                       "tag_type": "admin",
+                                       "created_at": "2017-10-26 22:17:04",
+                                       "updated_at": "2017-10-27 01:17:04"
+                                   }
+                               }
+                           ],
+                           "favourites": []
+                       }
+                   ]
+               }
+
+  /api/articles:
+    get:
+      tags:
+      - Posts
+      summary: Get Articles for feed
+      operationId: getArticles
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: query
+        name: offset
+        description: Offset
+        type: integer
+
+      - name: limit
+        in: query
+        description: Limit
+        type: integer
+
+      responses:
+        100:
+          description: Error
+          schema:
+            type: object
+            properties:
+              Message:
+                type: string
+                example: 'Error'
+              Response:
+                type: string
+                example: '1000'
+              UserBlocked:
+                type: integer
+                example: 0
+              Result:
+                type: object
+                example: {}
+
+        200:
+          description: Data retrieved successfully
+          schema:
+            type: object
+            properties:
+              Message:
+                type: string
+                example: 'Data retrieved successfully'
+              Response:
+                type: string
+                example: '2000'
+              UserBlocked:
+                type: integer
+                example: 0
+              Result:
+                type: object
+                example: {
+                  "TotalRecords": 1,
+                  "Posts": [
+                    {
+                      "id": 232,
+                      "user_id": "1",
+                      "category_id": "9",
+                      "top_bar": "Broadway Connected",
+                      "title": "Demonstration",
+                      "post_type": "article",
+                      "posting_type": "admin",
+                      "status": "scheduled",
+                      "description": "Demonstration",
+                      "location": "Z-1991, Lal Bahadur Shastri Rd, Jagjivan Ram Nagar",
+                      "latitude": "19.183292",
+                      "longitude": "19.183292",
+                      "start_date": "2018-02-09",
+                      "end_date": "2018-02-10",
+                      "start_time": "03:00:00",
+                      "end_time": "03:00:00",
+                      "is_all_day": "0",
+                      "color": "",
+                      "image": "KRYaSUPTjo6c.jpg",
+                      "published_date": "2018-02-09 03:00:00",
+                      "created_at": "2018-02-09 03:00:00",
+                      "updated_at": "2018-02-09 15:25:13",
+                      "reposted_at": "0000-00-00 00:00:00",
+                      "no_of_times_reposted": "0",
+                      "availability": "all",
+                      "group_ids": "",
+                      "source_url": "",
+                      "link_text": "",
+                      "in_trending": "1",
+                      "order_number": "0",
+                      "time_ago": "2018-02-09",
+                      "post_image": "http://brodway.dm/public/images/articles/KRYaSUPTjo6c.jpg",
+                      "is_like": 0,
+                      "likes": 0,
+                      "is_in_calendar": 0,
+                      "share_url": "http://brodway.dm/post/event/232",
+                      "publisher": {
+                        "id": 1,
+                        "role_id": "1",
+                        "first_name": "Broadway",
+                        "last_name": "Connected",
+                        "full_name": "",
+                        "email": "admin@broadwayconnected.com",
+                        "password": "$2y$10$FwzEtwIJ3SjPw74hs/4oKeXbOpYn.SYHNVeMoOpD6oAzTmzmUutd6",
+                        "status": "1",
+                        "dob": null,
+                        "city": "",
+                        "state": "",
+                        "country": "",
+                        "latitude": "0",
+                        "longitude": "0",
+                        "phone": "",
+                        "handle": "",
+                        "field_of_work": "",
+                        "field_of_work_id": "0",
+                        "headline_position": "Network Administrator @ Broadway Connected",
+                        "previous_position": "",
+                        "profile_picture": "pOIIqch0mgPP.jpg",
+                        "social_media_id": "",
+                        "social_media_platform": "",
+                        "notification_status": "1",
+                        "device_type": "",
+                        "device_token": "",
+                        "verification_code": "",
+                        "is_verified": "0",
+                        "is_featured": "0",
+                        "private_profile": "0",
+                        "is_subadmin": "1",
+                        "admin_role": "super",
+                        "created_at": "2017-10-24 11:49:15",
+                        "updated_at": "2018-01-16 04:59:51",
+                        "deleted_at": null,
+                        "last_login": "2017-10-24 14:49:15",
+                        "profile_image": "http://brodway.dm/public/images/pOIIqch0mgPP.jpg",
+                        "following_count": 0,
+                        "follower_count": 0,
+                        "article_count": 23,
+                        "event_count": 8,
+                        "is_following": 0,
+                        "fow": null
+                      },
+                      "tags": [],
+                      "favourites": []
+                    }
+                  ]
+                }
+
+  /api/posts:
+    get:
+      tags:
+      - Posts
+      summary: Get Articles and Events for feed
+      operationId: getPosts
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: query
+        name: offset
+        description: Offset
+        type: integer
+
+      - name: limit
+        in: query
+        description: Limit
+        type: integer
+
+      responses:
+        100:
+          description: Error
+          schema:
+            type: object
+            properties:
+              Message:
+                type: string
+                example: 'Error'
+              Response:
+                type: string
+                example: '1000'
+              UserBlocked:
+                type: integer
+                example: 0
+              Result:
+                type: object
+                example: {}
+
+        200:
+          description: Data retrieved successfully
+          schema:
+            type: object
+            properties:
+              Message:
+                type: string
+                example: 'Data retrieved successfully'
+              Response:
+                type: string
+                example: '2000'
+              UserBlocked:
+                type: integer
+                example: 0
+              Result:
+                type: object
+                example: {
+                  "TotalRecords": 2,
+                  "Posts": [
+                    {
+                      "id": 232,
+                      "user_id": "1",
+                      "category_id": "9",
+                      "top_bar": "Broadway Connected",
+                      "title": "Demonstration",
+                      "post_type": "article",
+                      "posting_type": "admin",
+                      "status": "scheduled",
+                      "description": "Demonstration",
+                      "location": "Z-1991, Lal Bahadur Shastri Rd, Jagjivan Ram Nagar",
+                      "latitude": "19.183292",
+                      "longitude": "19.183292",
+                      "start_date": "2018-02-09",
+                      "end_date": "2018-02-10",
+                      "start_time": "03:00:00",
+                      "end_time": "03:00:00",
+                      "is_all_day": "0",
+                      "color": "",
+                      "image": "KRYaSUPTjo6c.jpg",
+                      "published_date": "2018-02-09 03:00:00",
+                      "created_at": "2018-02-09 03:00:00",
+                      "updated_at": "2018-02-09 15:25:13",
+                      "reposted_at": "0000-00-00 00:00:00",
+                      "no_of_times_reposted": "0",
+                      "availability": "all",
+                      "group_ids": "",
+                      "source_url": "",
+                      "link_text": "",
+                      "in_trending": "1",
+                      "order_number": "0",
+                      "time_ago": "2018-02-09",
+                      "post_image": "http://brodway.dm/public/images/articles/KRYaSUPTjo6c.jpg",
+                      "is_like": 0,
+                      "likes": 0,
+                      "is_in_calendar": 0,
+                      "share_url": "http://brodway.dm/post/event/232",
+                      "publisher": {
+                        "id": 1,
+                        "role_id": "1",
+                        "first_name": "Broadway",
+                        "last_name": "Connected",
+                        "full_name": "",
+                        "email": "admin@broadwayconnected.com",
+                        "password": "$2y$10$FwzEtwIJ3SjPw74hs/4oKeXbOpYn.SYHNVeMoOpD6oAzTmzmUutd6",
+                        "status": "1",
+                        "dob": null,
+                        "city": "",
+                        "state": "",
+                        "country": "",
+                        "latitude": "0",
+                        "longitude": "0",
+                        "phone": "",
+                        "handle": "",
+                        "field_of_work": "",
+                        "field_of_work_id": "0",
+                        "headline_position": "Network Administrator @ Broadway Connected",
+                        "previous_position": "",
+                        "profile_picture": "pOIIqch0mgPP.jpg",
+                        "social_media_id": "",
+                        "social_media_platform": "",
+                        "notification_status": "1",
+                        "device_type": "",
+                        "device_token": "",
+                        "verification_code": "",
+                        "is_verified": "0",
+                        "is_featured": "0",
+                        "private_profile": "0",
+                        "is_subadmin": "1",
+                        "admin_role": "super",
+                        "created_at": "2017-10-24 11:49:15",
+                        "updated_at": "2018-01-16 04:59:51",
+                        "deleted_at": null,
+                        "last_login": "2017-10-24 14:49:15",
+                        "profile_image": "http://brodway.dm/public/images/pOIIqch0mgPP.jpg",
+                        "following_count": 0,
+                        "follower_count": 0,
+                        "article_count": 23,
+                        "event_count": 8,
+                        "is_following": 0,
+                        "fow": null
+                      },
+                      "tags": [],
+                      "favourites": []
+                    },
+                    {
+                        "id": 30,
+                        "user_id": "1",
+                        "category_id": "9",
+                        "top_bar": "University Theatre",
+                        "title": "Company - First Preview",
+                        "post_type": "event",
+                        "posting_type": "admin",
+                        "status": "approved",
+                        "description": "The Virginia Wadsworth Wirtz Center for Performing Arts Presents... Company. \r\n\r\nMusic and Lyrics by Stephen Sondheim\r\nBook by George Furth\r\nDirected by William Brown\r\n\r\nSynopsis: \r\nFrom musical theatre's most renowned composer, COMPANY is largely regarded as a trailblazer of the dark-comedy, modern-musical genre and the winner of seven Tony Awards. Jeff Award-winning director and TimeLIne Theatre Associate Artist Bill Brown directs this classic musical featuring a brilliantly brisk and energetic score with many of Stephen Sondheim's best known songs.\r\n\r\nPerformances: November 3 – 19, 2017\r\n@ The Ethel M. Barber Theater",
+                        "location": "30 Arts Cir Dr",
+                        "latitude": "42.051514",
+                        "longitude": "42.051514",
+                        "start_date": "2017-11-03",
+                        "end_date": "2017-11-03",
+                        "start_time": "19:30:00",
+                        "end_time": "22:00:00",
+                        "is_all_day": "0",
+                        "color": "#b81eb1",
+                        "image": "kWstS1xd6lIB.jpg",
+                        "published_date": "0000-00-00 00:00:00",
+                        "created_at": "2017-11-02 16:26:45",
+                        "updated_at": "2017-11-02 18:40:44",
+                        "reposted_at": "0000-00-00 00:00:00",
+                        "no_of_times_reposted": "0",
+                        "availability": "all",
+                        "group_ids": "",
+                        "source_url": "",
+                        "link_text": "",
+                        "in_trending": "0",
+                        "in_feed": "0",
+                        "order_number": "0",
+                        "number_of_comments": "0",
+                        "time_ago": "-0001-11-30",
+                        "post_image": "http://brodway.dm/public/images/articles/kWstS1xd6lIB.jpg",
+                        "is_like": 0,
+                        "likes": 0,
+                        "is_in_calendar": 0,
+                        "share_url": "http://brodway.dm/post/event/30",
+                        "publisher": {
+                            "id": 1,
+                            "role_id": "1",
+                            "first_name": "Broadway",
+                            "last_name": "Connected",
+                            "full_name": "",
+                            "email": "admin@broadwayconnected.com",
+                            "status": "1",
+                            "dob": null,
+                            "city": "",
+                            "state": "",
+                            "country": "",
+                            "latitude": "0",
+                            "longitude": "0",
+                            "phone": "",
+                            "handle": "",
+                            "field_of_work": "",
+                            "field_of_work_id": "0",
+                            "headline_position": "Network Administrator @ Broadway Connected",
+                            "previous_position": "",
+                            "profile_picture": "pOIIqch0mgPP.jpg",
+                            "social_media_id": "",
+                            "social_media_platform": "",
+                            "notification_status": "1",
+                            "device_type": "",
+                            "verification_code": "",
+                            "is_verified": "0",
+                            "is_featured": "0",
+                            "private_profile": "0",
+                            "is_subadmin": "1",
+                            "admin_role": "super",
+                            "created_at": "2017-10-24 11:49:15",
+                            "updated_at": "2018-01-16 04:59:51",
+                            "deleted_at": null,
+                            "last_login": "2017-10-24 14:49:15",
+                            "profile_image": "http://brodway.dm/public/images/pOIIqch0mgPP.jpg",
+                            "following_count": 0,
+                            "follower_count": 0,
+                            "article_count": 55,
+                            "event_count": 13,
+                            "is_following": 0,
+                            "fow": null
+                        },
+                        "tags": [
+                            {
+                                "id": 138,
+                                "post_id": "30",
+                                "tag_id": "74",
+                                "created_at": "2017-11-02 16:40:44",
+                                "updated_at": "2017-11-02 18:40:44",
+                                "tag_name": "University Theatre",
+                                "tag": {
+                                    "id": 74,
+                                    "tag": "University Theatre",
+                                    "status": "1",
+                                    "tag_type": "admin",
+                                    "created_at": "2017-10-26 22:21:09",
+                                    "updated_at": "2017-10-27 01:21:09"
+                                }
+                            }
+                        ],
+                        "favourites": []
+                    }
+                  ]
+                }
+
+  /api/posts/articles:
+    get:
+      tags:
+      - Posts
+      summary: Get All Articles For Push
+      operationId: getArticlesForPush
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: query
+        name: offset
+        description: Offset
+        type: integer
+
+      - name: limit
+        in: query
+        description: Limit
+        type: integer
+
+      responses:
+        100:
+          description: Error
+          schema:
+            type: object
+            properties:
+              Message:
+                type: string
+                example: 'Error'
+              Response:
+                type: string
+                example: '1000'
+              UserBlocked:
+                type: integer
+                example: 0
+              Result:
+                type: object
+                example: {}
+
+        200:
+          description: Data retrieved successfully
+          schema:
+            type: object
+            properties:
+              Message:
+                type: string
+                example: 'Data retrieved successfully'
+              Response:
+                type: string
+                example: '2000'
+              UserBlocked:
+                type: integer
+                example: 0
+              Result:
+                type: object
+                example: [{
+                    "id": 4,
+                    "title": "Tribute To Kurt",
+                    "time_ago": "Just Now",
+                    "post_image": "http://brodway.dm/public/images/articles/default.jpg",
+                    "is_like": 0,
+                    "likes": 0,
+                    "is_in_calendar": 0,
+                    "share_url": "http://brodway.dm/post//4",
+                    "favourites": []
+                },
+                {
+                    "id": 8,
+                    "title": "Testing",
+                    "time_ago": "Just Now",
+                    "post_image": "http://brodway.dm/public/images/articles/default.jpg",
+                    "is_like": 0,
+                    "likes": 1,
+                    "is_in_calendar": 0,
+                    "share_url": "http://brodway.dm/post//8",
+                    "favourites": [
+                        {
+                            "id": 25,
+                            "user_id": "14",
+                            "post_id": "8",
+                            "created_at": "2017-10-27 11:17:20",
+                            "updated_at": "2017-10-27 14:17:20"
+                        }
+                    ]
+                }
+              ]
+
+  /api/posts/events:
+    get:
+      tags:
+      - Posts
+      summary: Get All Events For Push
+      operationId: getEventsForPush
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: query
+        name: offset
+        description: Offset
+        type: integer
+
+      - name: limit
+        in: query
+        description: Limit
+        type: integer
+
+      responses:
+        100:
+          description: Error
+          schema:
+            type: object
+            properties:
+              Message:
+                type: string
+                example: 'Error'
+              Response:
+                type: string
+                example: '1000'
+              UserBlocked:
+                type: integer
+                example: 0
+              Result:
+                type: object
+                example: {}
+
+        200:
+          description: Data retrieved successfully
+          schema:
+            type: object
+            properties:
+              Message:
+                type: string
+                example: 'Data retrieved successfully'
+              Response:
+                type: string
+                example: '2000'
+              UserBlocked:
+                type: integer
+                example: 0
+              Result:
+                type: object
+                example: [{
+                    "id": 3,
+                    "title": "Event 1",
+                    "time_ago": "Just Now",
+                    "post_image": "http://brodway.dm/public/images/articles/default.jpg",
+                    "is_like": 0,
+                    "likes": 0,
+                    "is_in_calendar": 0,
+                    "share_url": "http://brodway.dm/post//3",
+                    "favourites": []
+                },
+                {
+                    "id": 14,
+                    "title": "Junk Opens Tonight on Broadway",
+                    "time_ago": "Just Now",
+                    "post_image": "http://brodway.dm/public/images/articles/default.jpg",
+                    "is_like": 0,
+                    "likes": 0,
+                    "is_in_calendar": 0,
+                    "share_url": "http://brodway.dm/post//14",
+                    "favourites": []
+                },
+                {
+                    "id": 25,
+                    "title": "The Band's Visit Opens Tonight on Broadway",
+                    "time_ago": "Just Now",
+                    "post_image": "http://brodway.dm/public/images/articles/default.jpg",
+                    "is_like": 0,
+                    "likes": 0,
+                    "is_in_calendar": 0,
+                    "share_url": "http://brodway.dm/post//25",
+                    "favourites": []
+                }
+              ]
+
+  /api/trending:
+    get:
+      tags:
+      - Posts
+      summary: Get Trending
+      operationId: getTrending
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: query
+        name: offset
+        description: Offset
+        type: integer
+
+      - name: limit
+        in: query
+        description: Limit
+        type: integer
+
+      responses:
+        100:
+          description: Error
+          schema:
+            type: object
+            properties:
+              Message:
+                type: string
+                example: 'Error'
+              Response:
+                type: string
+                example: '1000'
+              UserBlocked:
+                type: integer
+                example: 0
+              Result:
+                type: object
+                example: {}
+
+        200:
+          description: Data retrieved successfully
+          schema:
+            type: object
+            properties:
+              Message:
+                type: string
+                example: 'Data retrieved successfully'
+              Response:
+                type: string
+                example: '2000'
+              UserBlocked:
+                type: integer
+                example: 0
+              Result:
+                type: object
+                example: {
+                  "TotalRecords": 1,
+                  "Trending": [
+                    {
+                      "id": 232,
+                      "user_id": "1",
+                      "category_id": "9",
+                      "top_bar": "Broadway Connected",
+                      "title": "Demonstration",
+                      "post_type": "article",
+                      "posting_type": "admin",
+                      "status": "scheduled",
+                      "description": "Demonstration",
+                      "location": "Z-1991, Lal Bahadur Shastri Rd, Jagjivan Ram Nagar",
+                      "latitude": "19.183292",
+                      "longitude": "19.183292",
+                      "start_date": "2018-02-09",
+                      "end_date": "2018-02-10",
+                      "start_time": "03:00:00",
+                      "end_time": "03:00:00",
+                      "is_all_day": "0",
+                      "color": "",
+                      "image": "KRYaSUPTjo6c.jpg",
+                      "published_date": "2018-02-09 03:00:00",
+                      "created_at": "2018-02-09 03:00:00",
+                      "updated_at": "2018-02-09 15:25:13",
+                      "reposted_at": "0000-00-00 00:00:00",
+                      "no_of_times_reposted": "0",
+                      "availability": "all",
+                      "group_ids": "",
+                      "source_url": "",
+                      "link_text": "",
+                      "in_trending": "1",
+                      "order_number": "0",
+                      "time_ago": "2018-02-09",
+                      "post_image": "http://brodway.dm/public/images/articles/KRYaSUPTjo6c.jpg",
+                      "is_like": 0,
+                      "likes": 0,
+                      "is_in_calendar": 0,
+                      "share_url": "http://brodway.dm/post/event/232",
+                      "publisher": {
+                        "id": 1,
+                        "role_id": "1",
+                        "first_name": "Broadway",
+                        "last_name": "Connected",
+                        "full_name": "",
+                        "email": "admin@broadwayconnected.com",
+                        "password": "$2y$10$FwzEtwIJ3SjPw74hs/4oKeXbOpYn.SYHNVeMoOpD6oAzTmzmUutd6",
+                        "status": "1",
+                        "dob": null,
+                        "city": "",
+                        "state": "",
+                        "country": "",
+                        "latitude": "0",
+                        "longitude": "0",
+                        "phone": "",
+                        "handle": "",
+                        "field_of_work": "",
+                        "field_of_work_id": "0",
+                        "headline_position": "Network Administrator @ Broadway Connected",
+                        "previous_position": "",
+                        "profile_picture": "pOIIqch0mgPP.jpg",
+                        "social_media_id": "",
+                        "social_media_platform": "",
+                        "notification_status": "1",
+                        "device_type": "",
+                        "device_token": "",
+                        "verification_code": "",
+                        "is_verified": "0",
+                        "is_featured": "0",
+                        "private_profile": "0",
+                        "is_subadmin": "1",
+                        "admin_role": "super",
+                        "created_at": "2017-10-24 11:49:15",
+                        "updated_at": "2018-01-16 04:59:51",
+                        "deleted_at": null,
+                        "last_login": "2017-10-24 14:49:15",
+                        "profile_image": "http://brodway.dm/public/images/pOIIqch0mgPP.jpg",
+                        "following_count": 0,
+                        "follower_count": 0,
+                        "article_count": 23,
+                        "event_count": 8,
+                        "is_following": 0,
+                        "fow": null
+                      },
+                      "tags": [],
+                      "favourites": []
+                    }
+                  ]
+                }
+
+  /api/articles-by-tag:
+    get:
+      tags:
+      - Posts
+      summary: Get articles by tag
+      operationId: getArticlesByTag
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+        - in: query
+          name: tag_id
+          description: Id of tag
+          type: integer
+
+
+        - in: query
+          name: offset
+          description: Determines the order number of the show from which the sample will start
+          type: integer
+
+        - in: query
+          name: limit
+          description: Amount of shows that will be returned
+          type: integer
+
+
+      responses:
+        100:
+          description: Error
+          schema:
+            type: object
+            properties:
+              Message:
+                type: string
+                example: 'Error'
+              Response:
+                type: string
+                example: '1000'
+              UserBlocked:
+                type: integer
+                example: 0
+              Result:
+                type: object
+                example: {}
+
+        200:
+          description: Data retrieved successfully
+          schema:
+            type: object
+            properties:
+              Message:
+                type: string
+                example: 'Data retrieved successfully'
+              Response:
+                type: string
+                example: '2000'
+              UserBlocked:
+                type: integer
+                example: 0
+              Result:
+                type: object
+                example: {
+                  "TotalRecords": 1,
+                  "Trending": [
+                    {
+                      "id": 232,
+                      "user_id": "1",
+                      "category_id": "9",
+                      "top_bar": "Broadway Connected",
+                      "title": "Demonstration",
+                      "post_type": "article",
+                      "posting_type": "admin",
+                      "status": "scheduled",
+                      "description": "Demonstration",
+                      "location": "Z-1991, Lal Bahadur Shastri Rd, Jagjivan Ram Nagar",
+                      "latitude": "19.183292",
+                      "longitude": "19.183292",
+                      "start_date": "2018-02-09",
+                      "end_date": "2018-02-10",
+                      "start_time": "03:00:00",
+                      "end_time": "03:00:00",
+                      "is_all_day": "0",
+                      "color": "",
+                      "image": "KRYaSUPTjo6c.jpg",
+                      "published_date": "2018-02-09 03:00:00",
+                      "created_at": "2018-02-09 03:00:00",
+                      "updated_at": "2018-02-09 15:25:13",
+                      "reposted_at": "0000-00-00 00:00:00",
+                      "no_of_times_reposted": "0",
+                      "availability": "all",
+                      "group_ids": "",
+                      "source_url": "",
+                      "link_text": "",
+                      "in_trending": "1",
+                      "order_number": "0",
+                      "tags": "Industry Buzz, Broadway",
+                      "first_name": "Prince",
+                      "last_name": "Anderson",
+                      "publisher": {
+                        "first_name": "Broadway",
+                        "last_name": "Connected",
+                      },
+                    }
+                  ]
+                }
+
+  /api/article:
+    post:
+      tags:
+      - Posts
+      summary: Create article
+      operationId: createArticle
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: Article data
+        description: Article data
+        schema:
+          type: object
+          required:
+          - user_id
+          - title
+          - description
+          properties:
+            user_id:
+              type: integer
+              format: int64
+              example: '80'
+            title:
+              type: string
+              example: 'Test title'
+            description:
+              type: string
+              example: 'Test description'
+            source_url:
+              type: string
+              example: 'http://google.com'
+            link_text:
+              type: string
+              example: 'Link to google'
+
+      responses:
+        100:
+          description: The title may not be greater than 75 characters
+          schema:
+            type: object
+            properties:
+              Message:
+                type: string
+                example: 'The title may not be greater than 75 characters'
+              Response:
+                type: string
+                example: '1000'
+              UserBlocked:
+                type: integer
+                example: 0
+              Result:
+                type: object
+                example: {
+                  "TotalRecords": 1,
+                  "Posts": [
+                    {
+                      "id": 232,
+                      "user_id": "1",
+                      "category_id": "9",
+                      "top_bar": "Broadway Connected",
+                      "title": "Demonstration",
+                      "post_type": "article",
+                      "posting_type": "admin",
+                      "status": "scheduled",
+                      "description": "Demonstration",
+                      "location": "Z-1991, Lal Bahadur Shastri Rd, Jagjivan Ram Nagar",
+                      "latitude": "19.183292",
+                      "longitude": "19.183292",
+                      "start_date": "2018-02-09",
+                      "end_date": "2018-02-10",
+                      "start_time": "03:00:00",
+                      "end_time": "03:00:00",
+                      "is_all_day": "0",
+                      "color": "",
+                      "image": "KRYaSUPTjo6c.jpg",
+                      "published_date": "2018-02-09 03:00:00",
+                      "created_at": "2018-02-09 03:00:00",
+                      "updated_at": "2018-02-09 15:25:13",
+                      "reposted_at": "0000-00-00 00:00:00",
+                      "no_of_times_reposted": "0",
+                      "availability": "all",
+                      "group_ids": "",
+                      "source_url": "",
+                      "link_text": "",
+                      "in_trending": "1",
+                      "order_number": "0",
+                      "time_ago": "2018-02-09",
+                      "post_image": "http://brodway.dm/public/images/articles/KRYaSUPTjo6c.jpg",
+                      "is_like": 0,
+                      "likes": 0,
+                      "is_in_calendar": 0,
+                      "share_url": "http://brodway.dm/post/event/232",
+                      "publisher": {
+                        "id": 1,
+                        "role_id": "1",
+                        "first_name": "Broadway",
+                        "last_name": "Connected",
+                        "full_name": "",
+                        "email": "admin@broadwayconnected.com",
+                        "password": "$2y$10$FwzEtwIJ3SjPw74hs/4oKeXbOpYn.SYHNVeMoOpD6oAzTmzmUutd6",
+                        "status": "1",
+                        "dob": null,
+                        "city": "",
+                        "state": "",
+                        "country": "",
+                        "latitude": "0",
+                        "longitude": "0",
+                        "phone": "",
+                        "handle": "",
+                        "field_of_work": "",
+                        "field_of_work_id": "0",
+                        "headline_position": "Network Administrator @ Broadway Connected",
+                        "previous_position": "",
+                        "profile_picture": "pOIIqch0mgPP.jpg",
+                        "social_media_id": "",
+                        "social_media_platform": "",
+                        "notification_status": "1",
+                        "device_type": "",
+                        "device_token": "",
+                        "verification_code": "",
+                        "is_verified": "0",
+                        "is_featured": "0",
+                        "private_profile": "0",
+                        "is_subadmin": "1",
+                        "admin_role": "super",
+                        "created_at": "2017-10-24 11:49:15",
+                        "updated_at": "2018-01-16 04:59:51",
+                        "deleted_at": null,
+                        "last_login": "2017-10-24 14:49:15",
+                        "profile_image": "http://brodway.dm/public/images/pOIIqch0mgPP.jpg",
+                        "following_count": 0,
+                        "follower_count": 0,
+                        "article_count": 23,
+                        "event_count": 8,
+                        "is_following": 0,
+                        "fow": null
+                      },
+                      "tags": [],
+                      "favourites": []
+                    }
+                  ]
+                }
+
+        200:
+          description: Article Published, Check it out on your newsfeed!
+          schema:
+            type: object
+            properties:
+              Message:
+                type: string
+                example: 'Article Published, Check it out on your newsfeed!'
+              Response:
+                type: string
+                example: '2000'
+              UserBlocked:
+                type: integer
+                example: 0
+              Result:
+                type: object
+                example: {}
+
+  /api/edit-article:
+    post:
+      tags:
+      - Posts
+      summary: Update article
+      operationId: updateArticle
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: Article data
+        description: Article data
+        schema:
+          type: object
+          required:
+          - user_id
+          - post_id
+          - title
+          - description
+          properties:
+            user_id:
+              type: integer
+              format: int64
+              example: '80'
+            post_id:
+              type: integer
+              format: int64
+              example: '4'
+            title:
+              type: string
+              example: 'Test title'
+            description:
+              type: string
+              example: 'Test description'
+            source_url:
+              type: string
+              example: 'http://google.com'
+            link_text:
+              type: string
+              example: 'Link to google'
+
+      responses:
+        100:
+          description: The title may not be greater than 75 characters
+          schema:
+            type: object
+            properties:
+              Message:
+                type: string
+                example: 'The title may not be greater than 75 characters'
+              Response:
+                type: string
+                example: '1000'
+              UserBlocked:
+                type: integer
+                example: 0
+              Result:
+                type: object
+                example: {}
+
+        200:
+          description: Article has been updated successfully
+          schema:
+            type: object
+            properties:
+              Message:
+                type: string
+                example: 'Article has been updated successfully'
+              Response:
+                type: string
+                example: '1000'
+              UserBlocked:
+                type: integer
+                example: 0
+              Result:
+                type: object
+                example: {
+                  "TotalRecords": 1,
+                  "Posts": [
+                    {
+                      "id": 232,
+                      "user_id": "1",
+                      "category_id": "9",
+                      "top_bar": "Broadway Connected",
+                      "title": "Demonstration",
+                      "post_type": "article",
+                      "posting_type": "admin",
+                      "status": "scheduled",
+                      "description": "Demonstration",
+                      "location": "Z-1991, Lal Bahadur Shastri Rd, Jagjivan Ram Nagar",
+                      "latitude": "19.183292",
+                      "longitude": "19.183292",
+                      "start_date": "2018-02-09",
+                      "end_date": "2018-02-10",
+                      "start_time": "03:00:00",
+                      "end_time": "03:00:00",
+                      "is_all_day": "0",
+                      "color": "",
+                      "image": "KRYaSUPTjo6c.jpg",
+                      "published_date": "2018-02-09 03:00:00",
+                      "created_at": "2018-02-09 03:00:00",
+                      "updated_at": "2018-02-09 15:25:13",
+                      "reposted_at": "0000-00-00 00:00:00",
+                      "no_of_times_reposted": "0",
+                      "availability": "all",
+                      "group_ids": "",
+                      "source_url": "",
+                      "link_text": "",
+                      "in_trending": "1",
+                      "order_number": "0",
+                      "time_ago": "2018-02-09",
+                      "post_image": "http://brodway.dm/public/images/articles/KRYaSUPTjo6c.jpg",
+                      "is_like": 0,
+                      "likes": 0,
+                      "is_in_calendar": 0,
+                      "share_url": "http://brodway.dm/post/event/232",
+                      "publisher": {
+                        "id": 1,
+                        "role_id": "1",
+                        "first_name": "Broadway",
+                        "last_name": "Connected",
+                        "full_name": "",
+                        "email": "admin@broadwayconnected.com",
+                        "password": "$2y$10$FwzEtwIJ3SjPw74hs/4oKeXbOpYn.SYHNVeMoOpD6oAzTmzmUutd6",
+                        "status": "1",
+                        "dob": null,
+                        "city": "",
+                        "state": "",
+                        "country": "",
+                        "latitude": "0",
+                        "longitude": "0",
+                        "phone": "",
+                        "handle": "",
+                        "field_of_work": "",
+                        "field_of_work_id": "0",
+                        "headline_position": "Network Administrator @ Broadway Connected",
+                        "previous_position": "",
+                        "profile_picture": "pOIIqch0mgPP.jpg",
+                        "social_media_id": "",
+                        "social_media_platform": "",
+                        "notification_status": "1",
+                        "device_type": "",
+                        "device_token": "",
+                        "verification_code": "",
+                        "is_verified": "0",
+                        "is_featured": "0",
+                        "private_profile": "0",
+                        "is_subadmin": "1",
+                        "admin_role": "super",
+                        "created_at": "2017-10-24 11:49:15",
+                        "updated_at": "2018-01-16 04:59:51",
+                        "deleted_at": null,
+                        "last_login": "2017-10-24 14:49:15",
+                        "profile_image": "http://brodway.dm/public/images/pOIIqch0mgPP.jpg",
+                        "following_count": 0,
+                        "follower_count": 0,
+                        "article_count": 23,
+                        "event_count": 8,
+                        "is_following": 0,
+                        "fow": null
+                      },
+                      "tags": [],
+                      "favourites": []
+                    }
+                  ]
+                }
+
+  /api/event:
+    post:
+      tags:
+      - Posts
+      summary: Create event
+      operationId: createEvent
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - name: Event data
+        in: body
+        description: Event data
+        schema:
+          type: object
+          required:
+          - user_id
+          - title
+          - description
+          properties:
+            user_id:
+              type: integer
+              format: int64
+              example: '80'
+            title:
+              type: string
+              example: 'Test title'
+            description:
+              type: string
+              example: 'Test description'
+
+      responses:
+        100:
+          description: The title may not be greater than 75 characters
+          schema:
+            type: object
+            properties:
+              Message:
+                type: string
+                example: 'The title may not be greater than 75 characters'
+              Response:
+                type: string
+                example: '1000'
+              UserBlocked:
+                type: integer
+                example: 0
+              Result:
+                type: object
+                example: {}
+
+        200:
+          description: Event Published, Check it out on your newsfeed!
+          schema:
+            type: object
+            properties:
+              Message:
+                type: string
+                example: 'Event Published, Check it out on your newsfeed!'
+              Response:
+                type: string
+                example: '2000'
+              UserBlocked:
+                type: integer
+                example: 0
+              Result:
+                type: object
+                example: {
+                  "TotalRecords": 1,
+                  "Posts": [
+                    {
+                      "id": 232,
+                      "user_id": "1",
+                      "category_id": "9",
+                      "top_bar": "Broadway Connected",
+                      "title": "Demonstration",
+                      "post_type": "event",
+                      "posting_type": "admin",
+                      "status": "scheduled",
+                      "description": "Demonstration",
+                      "location": "Z-1991, Lal Bahadur Shastri Rd, Jagjivan Ram Nagar",
+                      "latitude": "19.183292",
+                      "longitude": "19.183292",
+                      "start_date": "2018-02-09",
+                      "end_date": "2018-02-10",
+                      "start_time": "03:00:00",
+                      "end_time": "03:00:00",
+                      "is_all_day": "0",
+                      "color": "",
+                      "image": "KRYaSUPTjo6c.jpg",
+                      "published_date": "2018-02-09 03:00:00",
+                      "created_at": "2018-02-09 03:00:00",
+                      "updated_at": "2018-02-09 15:25:13",
+                      "reposted_at": "0000-00-00 00:00:00",
+                      "no_of_times_reposted": "0",
+                      "availability": "all",
+                      "group_ids": "",
+                      "source_url": "",
+                      "link_text": "",
+                      "in_trending": "1",
+                      "order_number": "0",
+                      "time_ago": "2018-02-09",
+                      "post_image": "http://brodway.dm/public/images/articles/KRYaSUPTjo6c.jpg",
+                      "is_like": 0,
+                      "likes": 0,
+                      "is_in_calendar": 0,
+                      "share_url": "http://brodway.dm/post/event/232",
+                      "publisher": {
+                        "id": 1,
+                        "role_id": "1",
+                        "first_name": "Broadway",
+                        "last_name": "Connected",
+                        "full_name": "",
+                        "email": "admin@broadwayconnected.com",
+                        "password": "$2y$10$FwzEtwIJ3SjPw74hs/4oKeXbOpYn.SYHNVeMoOpD6oAzTmzmUutd6",
+                        "status": "1",
+                        "dob": null,
+                        "city": "",
+                        "state": "",
+                        "country": "",
+                        "latitude": "0",
+                        "longitude": "0",
+                        "phone": "",
+                        "handle": "",
+                        "field_of_work": "",
+                        "field_of_work_id": "0",
+                        "headline_position": "Network Administrator @ Broadway Connected",
+                        "previous_position": "",
+                        "profile_picture": "pOIIqch0mgPP.jpg",
+                        "social_media_id": "",
+                        "social_media_platform": "",
+                        "notification_status": "1",
+                        "device_type": "",
+                        "device_token": "",
+                        "verification_code": "",
+                        "is_verified": "0",
+                        "is_featured": "0",
+                        "private_profile": "0",
+                        "is_subadmin": "1",
+                        "admin_role": "super",
+                        "created_at": "2017-10-24 11:49:15",
+                        "updated_at": "2018-01-16 04:59:51",
+                        "deleted_at": null,
+                        "last_login": "2017-10-24 14:49:15",
+                        "profile_image": "http://brodway.dm/public/images/pOIIqch0mgPP.jpg",
+                        "following_count": 0,
+                        "follower_count": 0,
+                        "article_count": 23,
+                        "event_count": 8,
+                        "is_following": 0,
+                        "fow": null
+                      },
+                      "tags": [],
+                      "favourites": []
+                    }
+                  ]
+                }
+
+  /api/edit-event:
+    post:
+      tags:
+      - Posts
+      summary: Update event
+      operationId: updateEvent
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: Event data
+        description: Event data
+        schema:
+          type: object
+          required:
+          - user_id
+          - post_id
+          - title
+          - description
+          properties:
+            user_id:
+              type: integer
+              format: int64
+              example: '80'
+            post_id:
+              type: integer
+              format: int64
+              example: '5'
+            title:
+              type: string
+              example: 'Test title'
+            description:
+              type: string
+              example: 'Test description'
+
+      responses:
+        100:
+          description: The title may not be greater than 75 characters
+          schema:
+            type: object
+            properties:
+              Message:
+                type: string
+                example: 'The title may not be greater than 75 characters'
+              Response:
+                type: string
+                example: '1000'
+              UserBlocked:
+                type: integer
+                example: 0
+              Result:
+                type: object
+                example: {}
+
+        200:
+          description: Article has been updated successfully
+          schema:
+            type: object
+            properties:
+              Message:
+                type: string
+                example: 'Article has been updated successfully'
+              Response:
+                type: string
+                example: '2000'
+              UserBlocked:
+                type: integer
+                example: 0
+              Result:
+                type: object
+                example:  {
+                  "TotalRecords": 1,
+                  "Posts": [
+                    {
+                      "id": 232,
+                      "user_id": "1",
+                      "category_id": "9",
+                      "top_bar": "Broadway Connected",
+                      "title": "Demonstration",
+                      "post_type": "article",
+                      "posting_type": "admin",
+                      "status": "scheduled",
+                      "description": "Demonstration",
+                      "location": "Z-1991, Lal Bahadur Shastri Rd, Jagjivan Ram Nagar",
+                      "latitude": "19.183292",
+                      "longitude": "19.183292",
+                      "start_date": "2018-02-09",
+                      "end_date": "2018-02-10",
+                      "start_time": "03:00:00",
+                      "end_time": "03:00:00",
+                      "is_all_day": "0",
+                      "color": "",
+                      "image": "KRYaSUPTjo6c.jpg",
+                      "published_date": "2018-02-09 03:00:00",
+                      "created_at": "2018-02-09 03:00:00",
+                      "updated_at": "2018-02-09 15:25:13",
+                      "reposted_at": "0000-00-00 00:00:00",
+                      "no_of_times_reposted": "0",
+                      "availability": "all",
+                      "group_ids": "",
+                      "source_url": "",
+                      "link_text": "",
+                      "in_trending": "1",
+                      "order_number": "0",
+                      "time_ago": "2018-02-09",
+                      "post_image": "http://brodway.dm/public/images/articles/KRYaSUPTjo6c.jpg",
+                      "is_like": 0,
+                      "likes": 0,
+                      "is_in_calendar": 0,
+                      "share_url": "http://brodway.dm/post/event/232",
+                      "publisher": {
+                        "id": 1,
+                        "role_id": "1",
+                        "first_name": "Broadway",
+                        "last_name": "Connected",
+                        "full_name": "",
+                        "email": "admin@broadwayconnected.com",
+                        "password": "$2y$10$FwzEtwIJ3SjPw74hs/4oKeXbOpYn.SYHNVeMoOpD6oAzTmzmUutd6",
+                        "status": "1",
+                        "dob": null,
+                        "city": "",
+                        "state": "",
+                        "country": "",
+                        "latitude": "0",
+                        "longitude": "0",
+                        "phone": "",
+                        "handle": "",
+                        "field_of_work": "",
+                        "field_of_work_id": "0",
+                        "headline_position": "Network Administrator @ Broadway Connected",
+                        "previous_position": "",
+                        "profile_picture": "pOIIqch0mgPP.jpg",
+                        "social_media_id": "",
+                        "social_media_platform": "",
+                        "notification_status": "1",
+                        "device_type": "",
+                        "device_token": "",
+                        "verification_code": "",
+                        "is_verified": "0",
+                        "is_featured": "0",
+                        "private_profile": "0",
+                        "is_subadmin": "1",
+                        "admin_role": "super",
+                        "created_at": "2017-10-24 11:49:15",
+                        "updated_at": "2018-01-16 04:59:51",
+                        "deleted_at": null,
+                        "last_login": "2017-10-24 14:49:15",
+                        "profile_image": "http://brodway.dm/public/images/pOIIqch0mgPP.jpg",
+                        "following_count": 0,
+                        "follower_count": 0,
+                        "article_count": 23,
+                        "event_count": 8,
+                        "is_following": 0,
+                        "fow": null
+                      },
+                      "tags": [],
+                      "favourites": []
+                    }
+                  ]
+                }
+
+  /api/subscribe-to-tag:
+    post:
+      tags:
+      - Notifications
+      summary: Subscribe to tag
+      operationId: subscribeToTag
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: Subscription data
+        description: Subscription data
+        schema:
+          type: object
+          required:
+          - user_id
+          - tag_id
+          properties:
+            user_id:
+              type: integer
+              format: int64
+              example: '80'
+            tag_id:
+              type: integer
+              format: int64
+              example: '61'
+
+      responses:
+        100:
+          description: You are already subscribed to this topic before
+          schema:
+            type: object
+            properties:
+              Message:
+                type: string
+                example: 'You are already subscribed to this topic before'
+              Response:
+                type: string
+                example: '1000'
+              UserBlocked:
+                type: integer
+                example: 0
+              Result:
+                type: object
+                example: {}
+
+        200:
+          description: You has been subscribed successfully on this tag
+          schema:
+            type: object
+            properties:
+              Message:
+                type: string
+                example: 'You has been subscribed successfully on this tag'
+              Response:
+                type: string
+                example: '2000'
+              UserBlocked:
+                type: integer
+                example: 0
+              Result:
+                type: boolean
+                example: true
+
+  /api/question/get-daily:
+    get:
+      tags:
+      - Questions
+      summary: Get question of the day
+      operationId: getQuestion
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: query
+        name: user_id
+        description: Id of user
+        type: integer
+        required: true
+
+      responses:
+        100:
+          description: The user id field is required
+          schema:
+            type: object
+            properties:
+              Message:
+                type: string
+                example: 'The user id field is required'
+              Response:
+                type: string
+                example: '1000'
+              UserBlocked:
+                type: integer
+                example: 0
+              Result:
+                type: object
+                example: {}
+
+        200:
+          description: Data retrieved successfully
+          schema:
+            type: object
+            properties:
+              Message:
+                type: string
+                example: 'Data retrieved successfully'
+              Response:
+                type: string
+                example: '2000'
+              UserBlocked:
+                type: integer
+                example: 0
+              Result:
+                type: object
+                example: {
+                  "question": "Which of the following is a nickname for Broadway?",
+                  "id": 54,
+                  "options": [
+                      "America’s Tap Shoe",
+                      "The Big Apple",
+                      "The Great White Way",
+                      "The West End"
+                  ],
+                  "answered": false,
+                  "genius_streak": 0,
+                  "geek_streak": 0
+                }
+
+
+  /api/question/send-answer:
+    post:
+      tags:
+      - Questions
+      summary: Answer the daily question
+      operationId: answerQuestion
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: Answer data
+        description: Answer data
+        schema:
+          type: object
+          required:
+          - user_id
+          - answer_number
+          properties:
+            user_id:
+              type: integer
+              format: int64
+              example: 80
+            answer_number:
+              type: integer
+              format: int64
+              example: 1
+
+      responses:
+        100:
+          description: You already answered this question
+          schema:
+            type: object
+            properties:
+              Message:
+                type: string
+                example: 'You already answered this question'
+              Response:
+                type: string
+                example: '1000'
+              UserBlocked:
+                type: integer
+                example: 0
+              Result:
+                type: object
+                example: {}
+
+        200:
+          description: You has been subscribed successfully on this tag
+          schema:
+            type: object
+            properties:
+              Message:
+                type: string
+                example: 'You has been subscribed successfully on this tag'
+              Response:
+                type: string
+                example: '2000'
+              UserBlocked:
+                type: integer
+                example: 0
+              Result:
+                type: object
+                example: {
+                   "correct": true,
+                   "correct_answer": "I don't know",
+                   "genius_streak": 10,
+                   "geek_streak": 12
+                }
+
+  /api/shows:
+      get:
+        tags:
+        - Shows
+        summary: Get shows
+        operationId: getShows
+        consumes:
+        - application/json
+        produces:
+        - application/json
+        parameters:
+        - in: query
+          name: offset
+          description: Determines the order number of the show from which the sample will start
+          type: integer
+
+        - in: query
+          name: limit
+          description: Amount of shows that will be returned. Default value if not specified = 20
+          type: integer
+
+        - in: query
+          name: sort
+          description: Sort by “gross” or “audience” values
+          type: string
+
+        - in: query
+          name: order_by
+          description: Order by “asc” or “desc” values
+          type: string
+
+        - in: query
+          name: week
+          description: "Takes one of two values: date in year-month-day format (e.g. api/shows?week=2018-03-18) or \"latest\" value"
+          type: string
+
+        responses:
+          100:
+            description: Sort must be equal to "gross" or "audience"
+            schema:
+              type: object
+              properties:
+                Message:
+                  type: string
+                  example: Sort must be equal to 'gross' or 'audience'
+                Response:
+                  type: string
+                  example: '1000'
+                UserBlocked:
+                  type: integer
+                  example: 0
+                Result:
+                  type: object
+                  example: {}
+
+          200:
+            description: Data retrieved successfully
+            schema:
+              type: object
+              properties:
+                Message:
+                  type: string
+                  example: 'Data retrieved successfully'
+                Response:
+                  type: string
+                  example: '2000'
+                UserBlocked:
+                  type: integer
+                  example: 0
+                Result:
+                  type: object
+                  example: {
+                    "TotalRecords": 2,
+                    "Shows": [{
+                         "id": 19,
+                         "name": "The best show",
+                         "image": "t4wzQKlxjz9L.jpg",
+                         "total_gross": 1200,
+                         "gross": [
+                             {
+                                 "id": 94,
+                                 "start_week_date": "2018-03-18",
+                                 "earnings": "400.00",
+                                 "week_number": 4,
+                                 "audience": 60
+                             },
+                             {
+                                 "id": 93,
+                                 "start_week_date": "2018-01-14",
+                                 "earnings": "300.00",
+                                 "week_number": 3,
+                                 "audience": 40
+                             },
+                             {
+                                 "id": 92,
+                                 "start_week_date": "2018-01-07",
+                                 "earnings": "300.00",
+                                 "week_number": 2,
+                                 "audience": 40
+                             },
+                             {
+                                 "id": 91,
+                                 "start_week_date": "2017-12-31",
+                                 "earnings": "200.00",
+                                 "week_number": 1,
+                                 "audience": 20
+                             }
+                         ],
+                         "show_image": "http://broadway.com/public/images/shows/t4wzQKlxjz9L.jpg",
+                     }, {
+                         "id": 20,
+                         "name": "The best show",
+                         "image": "t4wzQKlxjz9L.jpg",
+                         "total_gross": 1200,
+                         "gross": [
+                             {
+                                 "id": 94,
+                                 "start_week_date": "2018-03-18",
+                                 "earnings": "400.00",
+                                 "week_number": 4,
+                                 "audience": 60
+                             },
+                             {
+                                 "id": 93,
+                                 "start_week_date": "2018-01-14",
+                                 "earnings": "300.00",
+                                 "week_number": 3,
+                                 "audience": 40
+                             },
+                             {
+                                 "id": 92,
+                                 "start_week_date": "2018-01-07",
+                                 "earnings": "300.00",
+                                 "week_number": 2,
+                                 "audience": 40
+                             },
+                             {
+                                 "id": 91,
+                                 "start_week_date": "2017-12-31",
+                                 "earnings": "200.00",
+                                 "week_number": 1,
+                                 "audience": 20
+                             }
+                         ],
+                         "show_image": "http://broadway.com/public/images/shows/t4wzQKlxjz9L.jpg",
+                     }]
+                  }
+
+  /api/show/details:
+      get:
+        tags:
+        - Shows
+        summary: Get show details
+        operationId: getShowDetails
+        consumes:
+        - application/json
+        produces:
+        - application/json
+        parameters:
+        - in: query
+          name: show_id
+          description: Show id
+          required: true
+          type: integer
+
+        responses:
+          100:
+            description: Show id is required
+            schema:
+              type: object
+              properties:
+                Message:
+                  type: string
+                  example: Show id is required
+                Response:
+                  type: string
+                  example: '1000'
+                UserBlocked:
+                  type: integer
+                  example: 0
+                Result:
+                  type: object
+                  example: {}
+
+          200:
+            description: Data retrieved successfully
+            schema:
+              type: object
+              properties:
+                Message:
+                  type: string
+                  example: 'Data retrieved successfully'
+                Response:
+                  type: string
+                  example: '2000'
+                UserBlocked:
+                  type: integer
+                  example: 0
+                Result:
+                  type: object
+                  example: {
+                       "id": 20,
+                       "theater_id": "5",
+                       "name": "cccc",
+                       "image": "t4wzQKlxjz9L.jpg",
+                       "schedule": {
+                           "sun": {
+                               "start": "08:00",
+                               "end": "17:00"
+                           },
+                           "mon": {
+                               "start": "00:00",
+                               "end": "08:00"
+                           },
+                           "tue": {
+                               "start": "05:00",
+                               "end": "16:00"
+                           },
+                           "wed": {
+                               "start": "",
+                               "end": ""
+                           },
+                           "thu": {
+                               "start": "",
+                               "end": ""
+                           },
+                           "fri": {
+                               "start": "",
+                               "end": ""
+                           },
+                           "sat": {
+                               "start": "",
+                               "end": ""
+                           }
+                       },
+                       "roles": [{
+                           "role": "Writer",
+                           "person": [
+                               "Vasya Pupkin",
+                               "Petya Vasyn"
+                           ]
+                       }, {
+                           "role": "Actor",
+                           "person": [
+                               "Vasya Pupkin",
+                               "Petya Vasyn"
+                           ]
+                       }],
+                       "preview_at": "2018-03-13 16:19:00",
+                       "opening_night_at": "2018-03-14 16:19:00",
+                       "engagement_at": "2018-03-15 16:19:00",
+                       "engagement_end": "2018-03-16 16:19:00",
+                       "closing_at": "2018-03-17 16:19:00",
+                       "show_image": "http://brodway.dm/public/images/shows/t4wzQKlxjz9L.jpg",
+                       "theater": {
+                           "id": 5,
+                            "name": "The best theater",
+                            "capacity": "222",
+                            "address": "Charivna street 117",
+                            "city": "Zaporizhzhya",
+                            "state": "Nevada",
+                            "zip": "11111",
+                            "created_at": "2018-03-08 09:27:49",
+                            "updated_at": "2018-03-08 09:27:49"
+                       },
+                       "gross": [
+                           {
+                               "id": 91,
+                               "start_week_date": "2017-12-31",
+                               "earnings": "200.00",
+                               "week_number": 1,
+                               "audience": 20
+                           },
+                           {
+                               "id": 92,
+                               "start_week_date": "2018-01-07",
+                               "earnings": "300.00",
+                               "week_number": 2,
+                               "audience": 40
+                           },
+                           {
+                               "id": 93,
+                               "start_week_date": "2018-01-14",
+                               "earnings": "300.00",
+                               "week_number": 3,
+                               "audience": 40
+                           },
+                           {
+                               "id": 94,
+                               "start_week_date": "2018-03-18",
+                               "earnings": "400.00",
+                               "week_number": 4,
+                               "audience": 60
+                           }
+                       ],
+                  }
+
+  /api/show/grosses:
+      get:
+        tags:
+        - Shows
+        summary: Get show grosses
+        operationId: getShowGrosses
+        consumes:
+        - application/json
+        produces:
+        - application/json
+        parameters:
+        - in: query
+          name: show_id
+          description: Show id
+          type: integer
+          required: true
+
+        - in: query
+          name: offset
+          description: Determines the order number of the gross from which the sample will start
+          type: integer
+
+        - in: query
+          name: limit
+          description: Amount of grosses that will be returned. Default value if not specified = 20
+          type: integer
+
+        - in: query
+          name: sort
+          description: Sort by “gross”, “date” or “audience” (in case of sorting by audience it compares the values of average amount of audience per show)
+          type: string
+
+        - in: query
+          name: order_by
+          description: Order by “asc” or “desc” values
+          type: string
+
+
+        responses:
+          100:
+            description: Wrong show id given
+            schema:
+              type: object
+              properties:
+                Message:
+                  type: string
+                  example: Wrong show id given
+                Response:
+                  type: string
+                  example: '1000'
+                UserBlocked:
+                  type: integer
+                  example: 0
+                Result:
+                  type: object
+                  example: {}
+
+          200:
+            description: Data retrieved successfully
+            schema:
+              type: object
+              properties:
+                Message:
+                  type: string
+                  example: 'Data retrieved successfully'
+                Response:
+                  type: string
+                  example: '2000'
+                UserBlocked:
+                  type: integer
+                  example: 0
+                Result:
+                  type: object
+                  example: {
+                      "TotalRecords": 123,
+                      "Grosses": [
+                        {
+                            "id": 18596,
+                            "end_week_date": "2017-12-31",
+                            "attendees_amount": 14540,
+                            "performances_amount": 9,
+                            "earnings": "2146126.00",
+                            "week_number": 1563,
+                            "avarage_audience": "1615.6"
+                        },
+                        {
+                            "id": 18544,
+                            "end_week_date": "2017-01-01",
+                            "attendees_amount": 14529,
+                            "performances_amount": 9,
+                            "earnings": "1942351.00",
+                            "week_number": 1511,
+                            "avarage_audience": "1614.3"
+                        },
+                        {
+                            "id": 18387,
+                            "end_week_date": "2013-12-29",
+                            "attendees_amount": 14622,
+                            "performances_amount": 9,
+                            "earnings": "1843296.00",
+                            "week_number": 1354,
+                            "avarage_audience": "1624.7"
+                        },
+                        {
+                            "id": 18335,
+                            "end_week_date": "2012-12-30",
+                            "attendees_amount": 14646,
+                            "performances_amount": 9,
+                            "earnings": "1751458.00",
+                            "week_number": 1302,
+                            "avarage_audience": "1627.3"
+                        },
+                        {
+                            "id": 18492,
+                            "end_week_date": "2016-01-03",
+                            "attendees_amount": 13288,
+                            "performances_amount": 9,
+                            "earnings": "1651287.00",
+                            "week_number": 1459,
+                            "avarage_audience": "1476.4"
+                        },
+                        {
+                            "id": 18440,
+                            "end_week_date": "2015-01-04",
+                            "attendees_amount": 13704,
+                            "performances_amount": 9,
+                            "earnings": "1649106.00",
+                            "week_number": 1407,
+                            "avarage_audience": "1522.7"
+                        },
+                        {
+                            "id": 18439,
+                            "end_week_date": "2014-12-28",
+                            "attendees_amount": 12955,
+                            "performances_amount": 8,
+                            "earnings": "1641020.00",
+                            "week_number": 1406,
+                            "avarage_audience": "1619.4"
+                        },
+                        {
+                            "id": 18609,
+                            "end_week_date": "2018-04-01",
+                            "attendees_amount": 12598,
+                            "performances_amount": 8,
+                            "earnings": "1605070.00",
+                            "week_number": 1576,
+                            "avarage_audience": "1574.8"
+                        },
+                        {
+                            "id": 18283,
+                            "end_week_date": "2012-01-01",
+                            "attendees_amount": 13034,
+                            "performances_amount": 8,
+                            "earnings": "1579428.00",
+                            "week_number": 1250,
+                            "avarage_audience": "1629.3"
+                        },
+                        {
+                            "id": 18348,
+                            "end_week_date": "2013-03-31",
+                            "attendees_amount": 13057,
+                            "performances_amount": 8,
+                            "earnings": "1562855.00",
+                            "week_number": 1315,
+                            "avarage_audience": "1632.1"
+                        }
+                      ]
+                  }
+
+  /api/shows/news:
+      get:
+        tags:
+        - Shows
+        summary: Get show news
+        operationId: getShowsNews
+        consumes:
+        - application/json
+        produces:
+        - application/json
+        parameters:
+        - in: query
+          name: show_id
+          description: Show id
+          type: integer
+
+        - in: query
+          name: offset
+          description: Determines the order number of the show from which the sample will start
+          type: integer
+
+        - in: query
+          name: limit
+          description: Amount of news that will be returned. Default value if not specified = 20
+          type: integer
+
+        - in: query
+          name: order_by
+          description: Order by “asc” or “desc” values
+          type: string
+
+
+        responses:
+          100:
+            description: Wrong show id given
+            schema:
+              type: object
+              properties:
+                Message:
+                  type: string
+                  example: Wrong show id given
+                Response:
+                  type: string
+                  example: '1000'
+                UserBlocked:
+                  type: integer
+                  example: 0
+                Result:
+                  type: object
+                  example: {}
+
+          200:
+            description: Data retrieved successfully
+            schema:
+              type: object
+              properties:
+                Message:
+                  type: string
+                  example: 'Data retrieved successfully'
+                Response:
+                  type: string
+                  example: '2000'
+                UserBlocked:
+                  type: integer
+                  example: 0
+                Result:
+                  type: object
+                  example: {
+                       "TotalRecords": 1,
+                       "News": [
+                           {
+                               "id": 4,
+                               "title": "Tribute To Kurt",
+                               "description": "HELLO ITS TESTING ARTICLE",
+                               "published_date": "2017-10-24 12:30:50",
+                               "image": "Pyl7gp9FIlqx.png",
+                               "created_at": "2017-10-24 12:30:50",
+                               "time_ago": "2017-10-24",
+                               "post_image": "http://broadway.com/public/images/articles/Pyl7gp9FIlqx.png",
+                               "is_like": 0,
+                               "likes": 0,
+                               "is_in_calendar": 0,
+                               "share_url": "http://brodway.dm/post//4",
+                               "favourites": []
+                           },
+                           {
+                               "id": 8,
+                               "title": "Testing",
+                               "description": "Hello",
+                               "published_date": "2017-10-26 09:01:26",
+                               "image": "PG8cUwKD8Zl6.jpg",
+                               "created_at": "2017-10-26 09:01:26",
+                               "time_ago": "2017-10-26",
+                               "post_image": "http://broadway.com/public/images/articles/PG8cUwKD8Zl6.jpg",
+                               "is_like": 0,
+                               "likes": 1,
+                               "is_in_calendar": 0,
+                               "share_url": "http://brodway.dm/post//8",
+                               "favourites": [
+                                   {
+                                       "id": 25,
+                                       "user_id": "14",
+                                       "post_id": "8",
+                                       "created_at": "2017-10-27 11:17:20",
+                                       "updated_at": "2017-10-27 14:17:20"
+                                   }
+                               ]
+                           },
+                       ]
+                  }
+
+externalDocs:
+  description: Find out more about Swagger
+  url: http://swagger.io
+# Added by API Auto Mocking Plugin
+host: virtserver.swaggerhub.com
+basePath: /openGeeksLab/BroadwayConnected/1.0.0
+schemes:
+ - https
+ - http

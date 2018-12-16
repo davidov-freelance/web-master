@@ -1,0 +1,2438 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "Blueprint of all the restful web-services of Broadway connected Application.",
+    "version": "1.0.1",
+    "title": "Web services For Broadway Connected Project",
+    "contact": {
+      "email": "test@test.com"
+    },
+    "license": {
+      "name": " BT"
+    }
+  },
+  "host": "35.160.175.165",
+  "basePath": "/broadwayconnected/api",
+  "tags": [
+    {
+      "name": "guestuser",
+      "description": "Guest user token detail to access services"
+    },
+    {
+      "name": "Users",
+      "description": "User or Account Operations"
+    },
+    {
+      "name": "Categories",
+      "description": "Services related to Categories will come under this tab"
+    },
+    {
+      "name": "Families",
+      "description": "Services related to Needy Families will come under this tab"
+    },
+    {
+      "name": "depreciated",
+      "description": "Services no longer is require for this project"
+    }
+  ],
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+
+    "/guestuser/token": {
+      "post": {
+        "tags": [
+          "guestuser"
+        ],
+        "summary": "This service will return token for guest user",
+        "description": " Token Generation Mechanism : apply base64 encode on project name(lowercase without space) , and your guest user token is ready  ",
+        "operationId": "Guest user Token",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "project_name",
+            "in": "formData",
+            "description": "Pass project name in lowercase without spacing , like cloudmadefood ",
+            "required": true,
+            "type": "string",
+            "default": "broadwayconnected"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          }
+        }
+      }
+    },
+
+    "/register": {
+      "post": {
+        "tags": [  "Users" ],
+        "summary": "Post Sign Up Form",
+        "description": "Create a new user.",
+        "operationId": "Register User",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "first_name",
+            "in": "formData",
+            "description": "First name of the user",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "last_name",
+            "in": "formData",
+            "description": "Last name of the user",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "email",
+            "in": "formData",
+            "description": "The email for signup",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "password",
+            "in": "formData",
+            "description": "Password for signup",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "dob",
+            "in": "formData",
+            "description": "(y-m-d = 2010-01-20) date of birth of the user",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "handle",
+            "in": "formData",
+            "description": "User Display name",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "country",
+            "in": "formData",
+            "description": "country of the user",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "city",
+            "in": "formData",
+            "description": "city of the user",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "field_of_work",
+            "in": "formData",
+            "description": "field_of_work of the user",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "headline_position",
+            "in": "formData",
+            "description": "Current Position of the user",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "previous_position",
+            "in": "formData",
+            "description": "Previous Position of the user",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "profile_picture",
+            "in": "formData",
+            "description": "profile_picture of the user",
+            "required": false,
+            "type": "file"
+          },
+          {
+            "name": "social_media_id",
+            "in": "formData",
+            "description": "social_media_id of the user",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "social_media_platform",
+            "in": "formData",
+            "description": "social_media_platform of the user",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "device_type",
+            "in": "formData",
+            "description": "device_type of the user",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "device_token",
+            "in": "formData",
+            "description": "device_token of the user",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          }
+        }
+      }
+    },
+    "/login": {
+      "post": {
+        "tags": [ "Users" ],
+        "summary": "Logs user into the system",
+        "description": "",
+        "operationId": "loginUser",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "email",
+            "in": "formData",
+            "description": "The email for login",
+            "required": true,
+            "type"    : "string",
+            "default" : "kenziebret@gmail.com"
+          },
+          {
+            "name": "password",
+            "in": "formData",
+            "description": "The password for login in clear text",
+            "required": true,
+            "type": "string",
+            "default": "123456"
+          },
+          {
+            "name": "device_type",
+            "in": "formData",
+            "description": "device_type of the user",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "device_token",
+            "in": "formData",
+            "description": "device_token of the user",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          }
+        }
+      }
+    },
+    "/socialLogin": {
+      "post": {
+        "tags": [ "Users" ],
+        "summary": "Logs user into the system",
+        "description": "",
+        "operationId": "loginUser",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "social_media_id",
+            "in": "formData",
+            "description": "The social_media_id for login",
+            "required": true,
+            "type"    : "string",
+            "default" : "0"
+          },
+          {
+            "name": "social_media_platform",
+            "in": "formData",
+            "description": "The social_media_platform eg ('google+ , fb')",
+            "required": true,
+            "type": "string",
+            "default": "fb"
+          },
+          {
+            "name": "device_type",
+            "in": "formData",
+            "description": "device_type of the user",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "device_token",
+            "in": "formData",
+            "description": "device_token of the user",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          }
+        }
+      }
+    },
+    "/forgotpassword": {
+      "post": {
+        "tags": [ "Users" ],
+        "summary": "Forgot Password",
+        "description": "",
+        "operationId": "Forgot Password",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "email",
+            "in": "formData",
+            "description": "email",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          }
+        }
+      }
+    },
+    "/user/update": {
+      "post": {
+        "tags": [ "Users" ],
+        "summary": "Update Device Token",
+        "description": "",
+        "operationId": "Update Device Token",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "formData",
+            "description": "User Id of the user",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "first_name",
+            "in": "formData",
+            "description": "First name of the user",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "last_name",
+            "in": "formData",
+            "description": "Last name of the user",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "dob",
+            "in": "formData",
+            "description": "(y-m-d = 2010-01-20) date of birth of the user",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "handle",
+            "in": "formData",
+            "description": "User Display name",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "country",
+            "in": "formData",
+            "description": "country of the user",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "city",
+            "in": "formData",
+            "description": "city of the user",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "field_of_work",
+            "in": "formData",
+            "description": "field_of_work of the user",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "headline_position",
+            "in": "formData",
+            "description": "Current Position of the user",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "previous_position",
+            "in": "formData",
+            "description": "Previous Position of the user",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "profile_picture",
+            "in": "formData",
+            "description": "profile_picture of the user",
+            "required": false,
+            "type": "file"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          }
+        }
+      }
+    },
+    "/changepassword": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "Change Password",
+        "description": "",
+        "operationId": "UChange Password",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "formData",
+            "description": "user id for different fields calculation",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "password",
+            "in": "formData",
+            "description": "password",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "old_password",
+            "in": "formData",
+            "description": "old_password",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "notification_status",
+            "in": "formData",
+            "enum": [
+              "1",
+              "0"
+            ],
+            "description": "notification_status",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "private_profile",
+            "in": "formData",
+            "enum": [
+              "1",
+              "0"
+            ],
+            "description": "private_profile",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "token",
+            "in": "header",
+            "description": "Token that available in user object ",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          }
+        }
+      }
+    },
+    "/user/following": {
+      "post": {
+        "tags": [ "Users" ],
+        "summary": "This Api is for marking Follow/Un follow user",
+        "description": "",
+        "operationId": "User Following",
+        "consumes": [ "application/json" ],
+        "produces": [ "application/json" ],
+        "parameters": [
+          {
+            "name": "follower_id",
+            "in": "formData",
+            "description": "follower_id of the user",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "followee_id",
+            "in": "formData",
+            "description": "followee_id of the user",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "token",
+            "in": "header",
+            "description": "Token that available in user object",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          }
+        }
+      }
+    },
+    "/user/followings": {
+      "get": {
+        "tags": [ "Users" ],
+        "summary": "This service is for getting user followings",
+        "description": "",
+        "operationId": "Users",
+        "consumes": [ "application/json" ],
+        "produces": [ "application/json" ],
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "query",
+            "description": "user id",
+            "required": true,
+            "type": "integer",
+            "default":"0"
+          },
+          {
+            "name": "token",
+            "in": "header",
+            "description": "Token that available in user object ",
+            "required": true,
+            "type": "string",
+            "default":""
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "offset , initially pass 0 , then 0+limit",
+            "required": true,
+            "type": "integer",
+            "default": "0"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "limit , no of records you want to get ,  by default its value is 10",
+            "required": false,
+            "type": "integer",
+            "default": "10"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          }
+        }
+      }
+    },
+    "/user/followers": {
+      "get": {
+        "tags": [ "Users" ],
+        "summary": "This service is for getting user followings",
+        "description": "",
+        "operationId": "Users",
+        "consumes": [ "application/json" ],
+        "produces": [ "application/json" ],
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "query",
+            "description": "user id",
+            "required": true,
+            "type": "integer",
+            "default":"0"
+          },
+          {
+            "name": "token",
+            "in": "header",
+            "description": "Token that available in user object ",
+            "required": true,
+            "type": "string",
+            "default":""
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "offset , initially pass 0 , then 0+limit",
+            "required": true,
+            "type": "integer",
+            "default": "0"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "limit , no of records you want to get ,  by default its value is 10",
+            "required": false,
+            "type": "integer",
+            "default": "10"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          }
+        }
+      }
+    },
+    "/user/profile": {
+      "get": {
+        "tags": [ "Users" ],
+        "summary": "This service is for getting user followings",
+        "description": "",
+        "operationId": "Users",
+        "consumes": [ "application/json" ],
+        "produces": [ "application/json" ],
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "query",
+            "description": "user id",
+            "required": true,
+            "type": "integer",
+            "default":"0"
+          },
+          {
+            "name": "profile_id",
+            "in": "query",
+            "description": "profile id",
+            "required": true,
+            "type": "integer",
+            "default":"0"
+          },
+          {
+            "name": "token",
+            "in": "header",
+            "description": "Token that available in user object ",
+            "required": true,
+            "type": "string",
+            "default":""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          }
+        }
+      }
+    },
+    "/user/discoveries": {
+      "get": {
+        "tags": [ "Users" ],
+        "summary": "This service is for getting user followings",
+        "description": "",
+        "operationId": "Users",
+        "consumes": [ "application/json" ],
+        "produces": [ "application/json" ],
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "query",
+            "description": "user id",
+            "required": true,
+            "type": "integer",
+            "default":"0"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "offset , initially pass 0 , then 0+limit",
+            "required": true,
+            "type": "integer",
+            "default": "0"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "limit , no of records you want to get ,  by default its value is 10",
+            "required": false,
+            "type": "integer",
+            "default": "10"
+          },
+          {
+            "name": "keyword",
+            "in": "query",
+            "description": "keyword for search",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "token",
+            "in": "header",
+            "description": "Token that available in user object ",
+            "required": true,
+            "type": "string",
+            "default":""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          }
+        }
+      }
+    },
+    "/user/suggestion": {
+      "get": {
+        "tags": [ "Users" ],
+        "summary": "This service is for getting user followings",
+        "description": "",
+        "operationId": "Users",
+        "consumes": [ "application/json" ],
+        "produces": [ "application/json" ],
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "query",
+            "description": "user id",
+            "required": true,
+            "type": "integer",
+            "default":"0"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "offset , initially pass 0 , then 0+limit",
+            "required": true,
+            "type": "integer",
+            "default": "0"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "limit , no of records you want to get ,  by default its value is 10",
+            "required": false,
+            "type": "integer",
+            "default": "10"
+          },
+          {
+            "name": "keyword",
+            "in": "query",
+            "description": "keyword , no of records you want to get , by default its value is 10",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "token",
+            "in": "header",
+            "description": "Token that available in user object ",
+            "required": true,
+            "type": "string",
+            "default":""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          }
+        }
+      }
+    },
+
+    "/tags": {
+      "get": {
+        "tags": [
+          "Tags"
+        ],
+        "summary": "This service is for getting user notifications",
+        "description": "",
+        "operationId": "Tags",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "query",
+            "description": "user id",
+            "required": false,
+            "type": "integer",
+            "default":"0"
+          },
+          {
+            "name": "token",
+            "in": "header",
+            "description": "Token that available in user object ",
+            "required": true,
+            "type": "string",
+            "default":""
+          },
+          {
+            "name": "keyword",
+            "in": "header",
+            "description": "keyword",
+            "required": false,
+            "type": "string",
+            "default":""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          }
+        }
+      }
+    },
+
+    "/categories": {
+      "get": {
+        "tags": [ "Categories" ],
+        "summary": "Logs user into the system",
+        "description": "",
+        "operationId": "Categories",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "query",
+            "description": "user id for different fields calculation",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "token",
+            "in": "header",
+            "description": "Token that available in user object ",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          }
+        }
+      }
+    },
+
+    "/notifications": {
+      "get": {
+        "tags": [
+          "Notifications"
+        ],
+        "summary": "This service is for getting user notifications",
+        "description": "",
+        "operationId": "Notifications",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "query",
+            "description": "user id",
+            "required": false,
+            "type": "integer",
+            "default":0
+          },
+          {
+            "name": "token",
+            "in": "header",
+            "description": "Token that available in user object ",
+            "required": true,
+            "type": "string",
+            "default":""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          }
+        }
+      }
+    },
+    "/notification/count": {
+      "get": {
+        "tags": [
+          "Notifications"
+        ],
+        "summary": "This service is for getting user notifications",
+        "description": "",
+        "operationId": "Notifications",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "query",
+            "description": "user id",
+            "required": false,
+            "type": "integer",
+            "default":0
+          },
+          {
+            "name": "token",
+            "in": "header",
+            "description": "Token that available in user object ",
+            "required": true,
+            "type": "string",
+            "default":""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          }
+        }
+      }
+    },
+    "/notification/mark/read": {
+      "get": {
+        "tags": [
+          "Notifications"
+        ],
+        "summary": "This service is for getting user notifications",
+        "description": "",
+        "operationId": "Notifications",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "query",
+            "description": "user id",
+            "required": false,
+            "type": "integer",
+            "default":0
+          },
+          {
+            "name": "notification_id",
+            "in": "query",
+            "description": "notification_id",
+            "required": false,
+            "type": "integer",
+            "default":0
+          },
+          {
+            "name": "token",
+            "in": "header",
+            "description": "Token that available in user object ",
+            "required": true,
+            "type": "string",
+            "default":""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          }
+        }
+      }
+    },
+    "/notification/delete": {
+      "get": {
+        "tags": [
+          "Notifications"
+        ],
+        "summary": "This service is for getting user notifications",
+        "description": "",
+        "operationId": "Notifications",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "query",
+            "description": "user id",
+            "required": false,
+            "type": "integer",
+            "default":0
+          },
+          {
+            "name": "notification_id",
+            "in": "query",
+            "description": "notification_id",
+            "required": false,
+            "type": "integer",
+            "default":0
+          },
+          {
+            "name": "token",
+            "in": "header",
+            "description": "Token that available in user object ",
+            "required": true,
+            "type": "string",
+            "default":""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          }
+        }
+      }
+    },
+
+    "/article": {
+      "post": {
+        "tags": [ "Articles" ],
+        "summary": "Logs user into the system",
+        "description": "",
+        "operationId": "Article",
+        "consumes": [ "application/json" ],
+        "produces": [ "application/json" ],
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "formData",
+            "description": "user id for different fields calculation",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "token",
+            "in": "header",
+            "description": "Token that available in user object ",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "title",
+            "in": "formData",
+            "description": "title",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "description",
+            "in": "formData",
+            "description": "description",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "image",
+            "in": "formData",
+            "description": "image for different fields calculation",
+            "required": true,
+            "type": "file"
+          },
+          {
+            "name": "tags",
+            "in": "formData",
+            "description": "pass comma seperated tag ids",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          }
+        }
+      }
+    },
+    "/edit-article": {
+      "post": {
+        "tags": [ "Articles" ],
+        "summary": "Logs user into the system",
+        "description": "",
+        "operationId": "Article",
+        "consumes": [ "application/json" ],
+        "produces": [ "application/json" ],
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "formData",
+            "description": "user id for different fields calculation",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "post_id",
+            "in": "formData",
+            "description": "post id require",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "token",
+            "in": "header",
+            "description": "Token that available in user object ",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "title",
+            "in": "formData",
+            "description": "title",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "description",
+            "in": "formData",
+            "description": "description",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "image",
+            "in": "formData",
+            "description": "image",
+            "required": false,
+            "type": "file"
+          },
+          {
+            "name": "tags",
+            "in": "formData",
+            "description": "pass comma separated tag ids",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          }
+        }
+      }
+    },
+    "/remove-post": {
+      "post": {
+        "tags": [ "Articles" ],
+        "summary": "Logs user into the system",
+        "description": "",
+        "operationId": "Article",
+        "consumes": [ "application/json" ],
+        "produces": [ "application/json" ],
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "formData",
+            "description": "user id for different fields calculation",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "post_id",
+            "in": "formData",
+            "description": "post id require",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "token",
+            "in": "header",
+            "description": "Token that available in user object ",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          }
+        }
+      }
+    },
+
+    "/event": {
+      "post": {
+        "tags": [ "Events" ],
+        "summary": "Logs user into the system",
+        "description": "",
+        "operationId": "Event",
+        "consumes": [ "application/json" ],
+        "produces": [ "application/json" ],
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "formData",
+            "description": "user id for different fields calculation",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "token",
+            "in": "header",
+            "description": "Token that available in user object ",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "category_id",
+            "in": "formData",
+            "description": "category_id",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "title",
+            "in": "formData",
+            "description": "title",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "description",
+            "in": "formData",
+            "description": "description",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "image",
+            "in": "formData",
+            "description": "image for different fields calculation",
+            "required": true,
+            "type": "file"
+          },
+          {
+            "name": "tags",
+            "in": "formData",
+            "description": "pass comma seperated tag ids",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "start_date",
+            "in": "formData",
+            "description": "y-m-d 2017-12-20",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "end_date",
+            "in": "formData",
+            "description":  "y-m-d 2017-12-20",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "start_time",
+            "in": "formData",
+            "description":  "H:i:s 16:12:12",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "end_time",
+            "in": "formData",
+            "description":  "H:i:s 16:12:12",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "color",
+            "in": "formData",
+            "description":  "#333333",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "is_all_day",
+            "in": "formData",
+            "enum": [
+              "0",
+              "1"
+            ],
+            "description": "is_all_day , select 0 for NO and 1 for Yes ",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "location",
+            "in": "formData",
+            "description":  "event location",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "latitude",
+            "in": "formData",
+            "description":  "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "longitude",
+            "in": "formData",
+            "description":  "",
+            "required": false,
+            "type": "string"
+          }
+
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          }
+        }
+      }
+    },
+    "/edit-event": {
+      "post": {
+        "tags": [ "Events" ],
+        "summary": "Logs user into the system",
+        "description": "",
+        "operationId": "Event",
+        "consumes": [ "application/json" ],
+        "produces": [ "application/json" ],
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "formData",
+            "description": "user id",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "post_id",
+            "in": "formData",
+            "description": "post id",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "token",
+            "in": "header",
+            "description": "Token that available in user object ",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "category_id",
+            "in": "formData",
+            "description": "category_id",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "title",
+            "in": "formData",
+            "description": "title",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "description",
+            "in": "formData",
+            "description": "description",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "image",
+            "in": "formData",
+            "description": "image for different fields calculation",
+            "required": false,
+            "type": "file"
+          },
+          {
+            "name": "tags",
+            "in": "formData",
+            "description": "pass comma seperated tag ids",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "start_date",
+            "in": "formData",
+            "description": "y-m-d 2017-12-20",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "end_date",
+            "in": "formData",
+            "description":  "y-m-d 2017-12-20",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "start_time",
+            "in": "formData",
+            "description":  "H:i:s 16:12:12",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "end_time",
+            "in": "formData",
+            "description":  "H:i:s 16:12:12",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "color",
+            "in": "formData",
+            "description":  "#333333",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "is_all_day",
+            "in": "formData",
+            "enum": [
+              "0",
+              "1"
+            ],
+            "description": "is_all_day , select 0 for NO and 1 for Yes ",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "location",
+            "in": "formData",
+            "description":  "event location",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "latitude",
+            "in": "formData",
+            "description":  "",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "longitude",
+            "in": "formData",
+            "description":  "",
+            "required": false,
+            "type": "string"
+          }
+
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          }
+        }
+      }
+    },
+    "/add-to-calendar": {
+      "post": {
+        "tags": [ "Calendar" ],
+        "summary": "Logs user into the system",
+        "description": "",
+        "operationId": "Calendar",
+        "consumes": [ "application/json" ],
+        "produces": [ "application/json" ],
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "formData",
+            "description": "user id for different fields calculation",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "post_id",
+            "in": "formData",
+            "description": "post id for different fields calculation",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "token",
+            "in": "header",
+            "description": "Token that available in user object ",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          }
+        }
+      }
+    },
+
+    "/posts": {
+      "get": {
+        "tags": [ "Articles" ],
+        "summary": "Logs user into the system",
+        "description": "",
+        "operationId": "Articles",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "query",
+            "description": "user id for different fields calculation",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "token",
+            "in": "header",
+            "description": "Token that available in user object ",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "offset , initially pass 0 , then 0+limit",
+            "required": true,
+            "type": "integer",
+            "default": "0"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "limit , no of records you want to get ,  by default its value is 10",
+            "required": false,
+            "type": "integer",
+            "default": "10"
+          },
+          {
+            "name": "keyword",
+            "in": "query",
+            "description": "keyword",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          }
+        }
+      }
+    },
+
+    "/calender": {
+      "get": {
+        "tags": [ "Calendar" ],
+        "summary": "Logs user into the system",
+        "description": "",
+        "operationId": "Calendar",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "query",
+            "description": "user id for different fields calculation",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "token",
+            "in": "header",
+            "description": "Token that available in user object ",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "start_date",
+            "in": "query",
+            "description": "from current date 6 month before and 6 month after records will appear",
+            "required": true,
+            "type": "string",
+            "default": "2017-06-06"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "offset , initially pass 0 , then 0+limit",
+            "required": true,
+            "type": "integer",
+            "default": "0"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "limit , no of records you want to get ,  by default its value is 10",
+            "required": false,
+            "type": "integer",
+            "default": "10"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          }
+        }
+      }
+    },
+    "/calender/detail": {
+      "get": {
+        "tags": [ "Calendar" ],
+        "summary": "Logs user into the system",
+        "description": "",
+        "operationId": "Calendar",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "query",
+            "description": "user id for different fields calculation",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "token",
+            "in": "header",
+            "description": "Token that available in user object ",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "start_date",
+            "in": "query",
+            "description": "from current date 6 month before and 6 month after records will appear",
+            "required": true,
+            "type": "string",
+            "default": "2017-06-06"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          }
+        }
+      }
+    },
+
+
+    "/user/articles": {
+      "get": {
+        "tags": [ "Users" ],
+        "summary": "This service is for getting user posted articles list",
+        "description": "",
+        "operationId": "Post",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "query",
+            "description": "user id for different fields calculation",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "offset , initially pass 0 , then 0+limit",
+            "required": true,
+            "type": "integer",
+            "default": "0"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "limit , no of records you want to get ,  by default its value is 10",
+            "required": false,
+            "type": "integer",
+            "default": "20"
+          },
+          {
+            "name": "token",
+            "in": "header",
+            "description": "Token that available in user object ",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          }
+        }
+      }
+    },
+    "/user/events": {
+      "get": {
+        "tags": [ "Users" ],
+        "summary": "This service is for getting user posted events list",
+        "description": "",
+        "operationId": "Post",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "query",
+            "description": "user id for different fields calculation",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "offset , initially pass 0 , then 0+limit",
+            "required": true,
+            "type": "integer",
+            "default": "0"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "limit , no of records you want to get ,  by default its value is 10",
+            "required": false,
+            "type": "integer",
+            "default": "20"
+          },
+          {
+            "name": "token",
+            "in": "header",
+            "description": "Token that available in user object ",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          }
+        }
+      }
+    },
+
+    "/search": {
+      "get": {
+        "tags": [ "Search" ],
+        "summary": "This service is for getting all type of search records",
+        "description": "",
+        "operationId": "Post",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "query",
+            "description": "user id ",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "keyword",
+            "in": "query",
+            "description": "keyword",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "search_type",
+            "in": "query",
+            "enum": [
+              "all",
+              "user",
+              "tag",
+              "article",
+              "event"
+            ],
+            "description": "search_type",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "offset , initially pass 0 , then 0+limit",
+            "required": true,
+            "type": "integer",
+            "default": "0"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "limit , no of records you want to get ,  by default its value is 10",
+            "required": false,
+            "type": "integer",
+            "default": "20"
+          },
+          {
+            "name": "token",
+            "in": "header",
+            "description": "Token that available in user object ",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          }
+        }
+      }
+    },
+
+    "/post/comment": {
+      "post": {
+        "tags": [ "Comments" ],
+        "summary": "Logs user into the system",
+        "description": "",
+        "operationId": "Posts",
+        "consumes": [ "application/json" ],
+        "produces": [ "application/json" ],
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "formData",
+            "description": "user id for different fields calculation",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "post_id",
+            "in": "formData",
+            "description": "post id for different fields calculation",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "token",
+            "in": "header",
+            "description": "Token that available in user object ",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "comment",
+            "in": "formData",
+            "description": "comment",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          }
+        }
+      }
+    },
+    "/post/comments": {
+      "get": {
+        "tags": [ "Comments" ],
+        "summary": "This service is for getting user favourite ads list",
+        "description": "",
+        "operationId": "Post",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "query",
+            "description": "user id for different fields calculation",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "post_id",
+            "in": "query",
+            "description": "post id for different fields calculation",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "offset , initially pass 0 , then 0+limit",
+            "required": true,
+            "type": "integer",
+            "default": "0"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "limit , no of records you want to get ,  by default its value is 10",
+            "required": false,
+            "type": "integer",
+            "default": "20"
+          },
+          {
+            "name": "token",
+            "in": "header",
+            "description": "Token that available in user object ",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          }
+        }
+      }
+    },
+
+    "/post/favourite": {
+      "post": {
+        "tags": [ "Favourites" ],
+        "summary": "This service is to get product as favourite",
+        "description": "",
+        "operationId": "Post",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "post_id",
+            "in": "formData",
+            "description": "post_id ",
+            "required": true,
+            "type": "integer",
+            "default":0
+          },
+          {
+            "name": "user_id",
+            "in": "formData",
+            "description": "user id for different fields calculation",
+            "required": true,
+            "type": "integer",
+            "default":0
+          },
+          {
+            "name": "token",
+            "in": "header",
+            "description": "Token that available in user object ",
+            "required": true,
+            "type": "string",
+            "default":"Z2FyYWdlZGlzY291bnQ="
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          }
+        }
+      }
+    },
+    "/post/favourites": {
+      "get": {
+        "tags": [ "Favourites" ],
+        "summary": "This service is for getting user favourite ads list",
+        "description": "",
+        "operationId": "Post",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "query",
+            "description": "user id for different fields calculation",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "offset , initially pass 0 , then 0+limit",
+            "required": true,
+            "type": "integer",
+            "default": "0"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "limit , no of records you want to get ,  by default its value is 10",
+            "required": false,
+            "type": "integer",
+            "default": "20"
+          },
+          {
+            "name": "token",
+            "in": "header",
+            "description": "Token that available in user object ",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          }
+        }
+      }
+    },
+
+    "/conversation/message": {
+      "post": {
+        "tags": [ "Chat" ],
+        "summary": "This service is to send message ",
+        "description": "",
+        "operationId": "Post",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "sender_id",
+            "in"  : "formData",
+            "description": "sender_id , its a logged in user id ",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "receiver_id",
+            "in": "formData",
+            "description": "receiver_id , product owner id",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "conversation_id",
+            "in": "formData",
+            "description": "conversation_id , its getting all message after that id",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "message_id",
+            "in": "formData",
+            "description": "message_id , its getting all message after that id",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "message",
+            "in": "formData",
+            "description": "message",
+            "required": true,
+            "type": "string",
+            "default":"This is test message"
+          },
+          {
+            "name": "token",
+            "in": "header",
+            "description": "Token that available in user object ",
+            "required": true,
+            "type": "string",
+            "default":"Z2FyYWdlZGlzY291bnQ="
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          }
+        }
+      }
+    },
+    "/conversation/threads": {
+      "get": {
+        "tags": [
+          "Chat"
+        ],
+        "summary": "This service is to get my chat ",
+        "description": "",
+        "operationId": "Post",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "user_id",
+            "in"  : "query",
+            "description": "user_id , its a logged in user id ",
+            "required": true,
+            "type": "integer",
+            "default":0
+          },
+          {
+            "name": "token",
+            "in": "header",
+            "description": "Token that available in user object ",
+            "required": true,
+            "type": "string",
+            "default":""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          }
+        }
+      }
+    },
+    "/conversation/thread/messages": {
+      "get": {
+        "tags": [
+          "Chat"
+        ],
+        "summary": "This service is to get my chat ",
+        "description": "",
+        "operationId": "Post",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "user_id",
+            "in"  : "query",
+            "description": "user_id , its a logged in user id ",
+            "required": true,
+            "type": "integer",
+            "default":0
+          },
+          {
+            "name": "conversation_id",
+            "in"  : "query",
+            "description": "conversation_id ",
+            "required": false,
+            "type": "integer",
+            "default":0
+          },
+          {
+            "name": "receiver_id",
+            "in"  : "query",
+            "description": "receiver_id ",
+            "required": true,
+            "type": "integer",
+            "default":0
+          },
+          {
+            "name": "token",
+            "in": "header",
+            "description": "Token that available in user object ",
+            "required": true,
+            "type": "string",
+            "default":""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          }
+        }
+      }
+    },
+
+    "/cms": {
+      "get": {
+        "tags": [ "Cms" ],
+        "summary": "This service is to get product detail ",
+        "description": "",
+        "operationId": "Static Page",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "query",
+            "description": "user id for different fields calculation",
+            "required": false,
+            "type": "integer",
+            "default":0
+          },
+          {
+            "name": "key",
+            "in": "query",
+            "description": "key (aboutus,terms,policies)",
+            "required": false,
+            "type": "integer",
+            "default":"terms"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          }
+        }
+      }
+    },
+    "/faq": {
+      "get": {
+        "tags": [ "FAQs Page" ],
+        "summary": "This service is to get FAQ  content",
+        "description": "",
+        "operationId": "subscription",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "formData",
+            "description": "Pass the user id in this field  ",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "token",
+            "in": "header",
+            "description": "Token that available in user object ",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          }
+        }
+      }
+    },
+    "/contact-us": {
+      "post": {
+        "tags": [ "ContactUs" ],
+        "summary": "Update Device Token",
+        "description": "",
+        "operationId": "Update Device Token",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "formData",
+            "description": "user id for different fields calculation",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "message",
+            "in": "formData",
+            "description": "user message",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "token",
+            "in": "header",
+            "description": "Token that available in user object ",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          }
+        }
+      }
+    },
+
+    "/report/post": {
+      "post": {
+        "tags": [ "Report" ],
+        "summary": "This service is for reporting post",
+        "description": "",
+        "operationId": "This service is for reporting post",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "formData",
+            "description": "user id",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "post_id",
+            "in": "formData",
+            "description": "post id",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "reason",
+            "in": "formData",
+            "description": "reason",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "token",
+            "in": "header",
+            "description": "Token that available in user object ",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          }
+        }
+      }
+    },
+    "/report/option": {
+      "get": {
+        "tags": [ "Report" ],
+        "summary": "This service is for reporting post",
+        "description": "",
+        "operationId": "This service is for reporting post",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "query",
+            "description": "user id",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "token",
+            "in": "header",
+            "description": "Token that available in user object ",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          }
+        }
+      }
+    }
+
+  },
+
+  "securityDefinitions": {
+  },
+  "definitions": {
+  }
+}
